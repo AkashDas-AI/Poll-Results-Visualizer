@@ -1,0 +1,643 @@
+{
+  "total_respondents": 49191,
+  "total_columns": 176,
+  "profiling_stats": {
+    "YearsCode_num": {
+      "answered_count": 43042,
+      "missing_count": 6149,
+      "pct_answered": 87.5,
+      "pct_missing": 12.5,
+      "min": 1.0,
+      "q25": 8.0,
+      "median": 14.0,
+      "q75": 24.0,
+      "mean": 16.57,
+      "max": 100.0,
+      "std": 11.79
+    },
+    "WorkExp_num": {
+      "answered_count": 42893,
+      "missing_count": 6298,
+      "pct_answered": 87.2,
+      "pct_missing": 12.8,
+      "min": 1.0,
+      "q25": 5.0,
+      "median": 10.0,
+      "q75": 20.0,
+      "mean": 13.37,
+      "max": 100.0,
+      "std": 10.8
+    },
+    "ConvertedCompYearly": {
+      "answered_count": 23947,
+      "missing_count": 25244,
+      "pct_answered": 48.68,
+      "pct_missing": 51.32,
+      "min": 1.0,
+      "q25": 38171.0,
+      "median": 75320.0,
+      "q75": 120596.0,
+      "mean": 101761.54,
+      "max": 50000000.0,
+      "std": 461756.9
+    }
+  },
+  "top_countries": {
+    "United States of America": 7233,
+    "Germany": 3025,
+    "India": 2547,
+    "United Kingdom of Great Britain and Northern Ireland": 2042,
+    "France": 1409,
+    "Canada": 1305,
+    "Ukraine": 964,
+    "Poland": 888,
+    "Netherlands": 867,
+    "Italy": 835
+  },
+  "top_roles": {
+    "Developer, full-stack": 12351,
+    "Developer, back-end": 6453,
+    "Student": 3008,
+    "Architect, software or solutions": 2684,
+    "Developer, front-end": 1974,
+    "Developer, desktop or enterprise applications": 1919,
+    "Other (please specify):": 1825,
+    "Developer, mobile": 1391,
+    "Developer, embedded applications or devices": 1274,
+    "Academic researcher": 1131
+  },
+  "top_languages_have": [
+    {
+      "Technology": "JavaScript",
+      "Respondent_Count": 21005,
+      "Respondent_Pct": 66.32,
+      "Selection_Pct": 10.79
+    },
+    {
+      "Technology": "HTML/CSS",
+      "Respondent_Count": 19698,
+      "Respondent_Pct": 62.2,
+      "Selection_Pct": 10.12
+    },
+    {
+      "Technology": "SQL",
+      "Respondent_Count": 18633,
+      "Respondent_Pct": 58.83,
+      "Selection_Pct": 9.58
+    },
+    {
+      "Technology": "Python",
+      "Respondent_Count": 18410,
+      "Respondent_Pct": 58.13,
+      "Selection_Pct": 9.46
+    },
+    {
+      "Technology": "Bash/Shell (all shells)",
+      "Respondent_Count": 15503,
+      "Respondent_Pct": 48.95,
+      "Selection_Pct": 7.97
+    },
+    {
+      "Technology": "TypeScript",
+      "Respondent_Count": 13859,
+      "Respondent_Pct": 43.76,
+      "Selection_Pct": 7.12
+    },
+    {
+      "Technology": "Java",
+      "Respondent_Count": 9358,
+      "Respondent_Pct": 29.55,
+      "Selection_Pct": 4.81
+    },
+    {
+      "Technology": "C#",
+      "Respondent_Count": 8852,
+      "Respondent_Pct": 27.95,
+      "Selection_Pct": 4.55
+    },
+    {
+      "Technology": "C++",
+      "Respondent_Count": 7485,
+      "Respondent_Pct": 23.63,
+      "Selection_Pct": 3.85
+    },
+    {
+      "Technology": "PowerShell",
+      "Respondent_Count": 7371,
+      "Respondent_Pct": 23.27,
+      "Selection_Pct": 3.79
+    }
+  ],
+  "top_languages_want": [
+    {
+      "Technology": "Python",
+      "Respondent_Count": 12419,
+      "Respondent_Pct": 45.86,
+      "Selection_Pct": 8.88
+    },
+    {
+      "Technology": "SQL",
+      "Respondent_Count": 11257,
+      "Respondent_Pct": 41.57,
+      "Selection_Pct": 8.05
+    },
+    {
+      "Technology": "HTML/CSS",
+      "Respondent_Count": 10661,
+      "Respondent_Pct": 39.37,
+      "Selection_Pct": 7.63
+    },
+    {
+      "Technology": "JavaScript",
+      "Respondent_Count": 10581,
+      "Respondent_Pct": 39.07,
+      "Selection_Pct": 7.57
+    },
+    {
+      "Technology": "TypeScript",
+      "Respondent_Count": 10099,
+      "Respondent_Pct": 37.29,
+      "Selection_Pct": 7.22
+    },
+    {
+      "Technology": "Rust",
+      "Respondent_Count": 9262,
+      "Respondent_Pct": 34.2,
+      "Selection_Pct": 6.63
+    },
+    {
+      "Technology": "Bash/Shell (all shells)",
+      "Respondent_Count": 8662,
+      "Respondent_Pct": 31.99,
+      "Selection_Pct": 6.2
+    },
+    {
+      "Technology": "Go",
+      "Respondent_Count": 7414,
+      "Respondent_Pct": 27.38,
+      "Selection_Pct": 5.3
+    },
+    {
+      "Technology": "C#",
+      "Respondent_Count": 6117,
+      "Respondent_Pct": 22.59,
+      "Selection_Pct": 4.38
+    },
+    {
+      "Technology": "C++",
+      "Respondent_Count": 5243,
+      "Respondent_Pct": 19.36,
+      "Selection_Pct": 3.75
+    }
+  ],
+  "top_databases": [
+    {
+      "Technology": "PostgreSQL",
+      "Respondent_Count": 14529,
+      "Respondent_Pct": 56.86,
+      "Selection_Pct": 16.13
+    },
+    {
+      "Technology": "MySQL",
+      "Respondent_Count": 10581,
+      "Respondent_Pct": 41.41,
+      "Selection_Pct": 11.74
+    },
+    {
+      "Technology": "SQLite",
+      "Respondent_Count": 9798,
+      "Respondent_Pct": 38.35,
+      "Selection_Pct": 10.88
+    },
+    {
+      "Technology": "Microsoft SQL Server",
+      "Respondent_Count": 7871,
+      "Respondent_Pct": 30.81,
+      "Selection_Pct": 8.74
+    },
+    {
+      "Technology": "Redis",
+      "Respondent_Count": 7316,
+      "Respondent_Pct": 28.63,
+      "Selection_Pct": 8.12
+    },
+    {
+      "Technology": "MongoDB",
+      "Respondent_Count": 6267,
+      "Respondent_Pct": 24.53,
+      "Selection_Pct": 6.96
+    },
+    {
+      "Technology": "MariaDB",
+      "Respondent_Count": 5862,
+      "Respondent_Pct": 22.94,
+      "Selection_Pct": 6.51
+    },
+    {
+      "Technology": "Elasticsearch",
+      "Respondent_Count": 4347,
+      "Respondent_Pct": 17.01,
+      "Selection_Pct": 4.83
+    },
+    {
+      "Technology": "Oracle",
+      "Respondent_Count": 2761,
+      "Respondent_Pct": 10.81,
+      "Selection_Pct": 3.06
+    },
+    {
+      "Technology": "Dynamodb",
+      "Respondent_Count": 2551,
+      "Respondent_Pct": 9.98,
+      "Selection_Pct": 2.83
+    }
+  ],
+  "top_platforms": [
+    {
+      "Technology": "Docker",
+      "Respondent_Count": 17414,
+      "Respondent_Pct": 71.79,
+      "Selection_Pct": 10.06
+    },
+    {
+      "Technology": "npm",
+      "Respondent_Count": 13906,
+      "Respondent_Pct": 57.33,
+      "Selection_Pct": 8.03
+    },
+    {
+      "Technology": "Amazon Web Services (AWS)",
+      "Respondent_Count": 10618,
+      "Respondent_Pct": 43.77,
+      "Selection_Pct": 6.13
+    },
+    {
+      "Technology": "Pip",
+      "Respondent_Count": 10025,
+      "Respondent_Pct": 41.33,
+      "Selection_Pct": 5.79
+    },
+    {
+      "Technology": "Kubernetes",
+      "Respondent_Count": 6993,
+      "Respondent_Pct": 28.83,
+      "Selection_Pct": 4.04
+    },
+    {
+      "Technology": "Microsoft Azure",
+      "Respondent_Count": 6447,
+      "Respondent_Pct": 26.58,
+      "Selection_Pct": 3.72
+    },
+    {
+      "Technology": "Homebrew",
+      "Respondent_Count": 6291,
+      "Respondent_Pct": 25.93,
+      "Selection_Pct": 3.63
+    },
+    {
+      "Technology": "Vite",
+      "Respondent_Count": 6215,
+      "Respondent_Pct": 25.62,
+      "Selection_Pct": 3.59
+    },
+    {
+      "Technology": "Google Cloud",
+      "Respondent_Count": 6015,
+      "Respondent_Pct": 24.8,
+      "Selection_Pct": 3.47
+    },
+    {
+      "Technology": "Make",
+      "Respondent_Count": 5682,
+      "Respondent_Pct": 23.42,
+      "Selection_Pct": 3.28
+    }
+  ],
+  "ai_usage": {
+    "Yes, I use AI tools daily": 15883,
+    "Yes, I use AI tools weekly": 5958,
+    "No, and I don't plan to": 5454,
+    "Yes, I use AI tools monthly or infrequently": 4628,
+    "No, but I plan to soon": 1797
+  },
+  "ai_accuracy_trust": {
+    "Somewhat trust": 9869,
+    "Somewhat distrust": 8685,
+    "Neither trust nor distrust": 7162,
+    "Highly distrust": 6533,
+    "Highly trust": 1048
+  },
+  "ai_agents": {
+    "No, and I don't plan to": 12082,
+    "No, but I plan to": 5561,
+    "Yes, I use AI agents at work daily": 4509,
+    "No, I use AI exclusively in copilot/autocomplete mode": 4401,
+    "Yes, I use AI agents at work weekly": 2868,
+    "Yes, I use AI agents at work monthly or infrequently": 2498
+  },
+  "compensation_top_countries": {
+    "United States of America": 150000.0,
+    "Switzerland": 142592.0,
+    "Israel": 141188.0,
+    "Ireland": 116015.0,
+    "Denmark": 98678.0,
+    "Australia": 97514.0,
+    "United Kingdom of Great Britain and Northern Ireland": 94618.0,
+    "Norway": 88945.0,
+    "Canada": 87550.0,
+    "New Zealand": 81318.0
+  },
+  "compensation_experience": [
+    {
+      "Exp_Bracket": "< 2 years",
+      "count": 860,
+      "median": 20348.0,
+      "q25": 5616.0,
+      "q75": 46406.0
+    },
+    {
+      "Exp_Bracket": "2 to under 6 years",
+      "count": 4793,
+      "median": 39445.0,
+      "q25": 13922.0,
+      "q75": 69609.0
+    },
+    {
+      "Exp_Bracket": "6 to under 11 years",
+      "count": 5585,
+      "median": 72000.0,
+      "q25": 41868.0,
+      "q75": 110214.0
+    },
+    {
+      "Exp_Bracket": "11 to under 16 years",
+      "count": 4224,
+      "median": 90640.5,
+      "q25": 58007.0,
+      "q75": 136141.0
+    },
+    {
+      "Exp_Bracket": "16 to under 20 years",
+      "count": 1814,
+      "median": 98612.0,
+      "q25": 63808.0,
+      "q75": 150000.0
+    },
+    {
+      "Exp_Bracket": "20 years and above",
+      "count": 6193,
+      "median": 106733.0,
+      "q25": 68331.0,
+      "q75": 160000.0
+    }
+  ],
+  "compensation_roles": [
+    {
+      "DevType": "Senior executive (C-suite, VP, etc.)",
+      "count": 316,
+      "median": 139218.0
+    },
+    {
+      "DevType": "Engineering manager",
+      "count": 717,
+      "median": 130000.0
+    },
+    {
+      "DevType": "Product manager",
+      "count": 115,
+      "median": 104413.0
+    },
+    {
+      "DevType": "Cloud infrastructure engineer",
+      "count": 266,
+      "median": 103112.5
+    },
+    {
+      "DevType": "Architect, software or solutions",
+      "count": 1626,
+      "median": 100962.0
+    },
+    {
+      "DevType": "Cybersecurity or InfoSec professional",
+      "count": 193,
+      "median": 98827.0
+    },
+    {
+      "DevType": "Applied scientist",
+      "count": 162,
+      "median": 98612.0
+    },
+    {
+      "DevType": "Founder, technology or otherwise",
+      "count": 193,
+      "median": 92786.0
+    },
+    {
+      "DevType": "AI/ML engineer",
+      "count": 352,
+      "median": 87280.5
+    },
+    {
+      "DevType": "DevOps engineer or professional",
+      "count": 697,
+      "median": 87011.0
+    },
+    {
+      "DevType": "Database administrator or engineer",
+      "count": 99,
+      "median": 85769.0
+    },
+    {
+      "DevType": "Data scientist",
+      "count": 345,
+      "median": 81210.0
+    }
+  ],
+  "missing_summary": [
+    {
+      "Section": "Demographics",
+      "Variable": "Age",
+      "Missing_Count": 0,
+      "Missing_Pct": 0.0,
+      "Answered_Count": 49191,
+      "Answered_Pct": 100.0
+    },
+    {
+      "Section": "Demographics",
+      "Variable": "EdLevel",
+      "Missing_Count": 1042,
+      "Missing_Pct": 2.12,
+      "Answered_Count": 48149,
+      "Answered_Pct": 97.88
+    },
+    {
+      "Section": "Demographics",
+      "Variable": "Country",
+      "Missing_Count": 13754,
+      "Missing_Pct": 27.96,
+      "Answered_Count": 35437,
+      "Answered_Pct": 72.04
+    },
+    {
+      "Section": "Demographics",
+      "Variable": "DevType",
+      "Missing_Count": 5511,
+      "Missing_Pct": 11.2,
+      "Answered_Count": 43680,
+      "Answered_Pct": 88.8
+    },
+    {
+      "Section": "Demographics",
+      "Variable": "Employment",
+      "Missing_Count": 852,
+      "Missing_Pct": 1.73,
+      "Answered_Count": 48339,
+      "Answered_Pct": 98.27
+    },
+    {
+      "Section": "Demographics",
+      "Variable": "RemoteWork",
+      "Missing_Count": 15411,
+      "Missing_Pct": 31.33,
+      "Answered_Count": 33780,
+      "Answered_Pct": 68.67
+    },
+    {
+      "Section": "Experience",
+      "Variable": "YearsCode",
+      "Missing_Count": 6149,
+      "Missing_Pct": 12.5,
+      "Answered_Count": 43042,
+      "Answered_Pct": 87.5
+    },
+    {
+      "Section": "Experience",
+      "Variable": "WorkExp",
+      "Missing_Count": 6298,
+      "Missing_Pct": 12.8,
+      "Answered_Count": 42893,
+      "Answered_Pct": 87.2
+    },
+    {
+      "Section": "Experience",
+      "Variable": "YearsCode_num",
+      "Missing_Count": 6149,
+      "Missing_Pct": 12.5,
+      "Answered_Count": 43042,
+      "Answered_Pct": 87.5
+    },
+    {
+      "Section": "Experience",
+      "Variable": "WorkExp_num",
+      "Missing_Count": 6298,
+      "Missing_Pct": 12.8,
+      "Answered_Count": 42893,
+      "Answered_Pct": 87.2
+    },
+    {
+      "Section": "Technology Use",
+      "Variable": "LanguageHaveWorkedWith",
+      "Missing_Count": 17520,
+      "Missing_Pct": 35.62,
+      "Answered_Count": 31671,
+      "Answered_Pct": 64.38
+    },
+    {
+      "Section": "Technology Use",
+      "Variable": "DatabaseHaveWorkedWith",
+      "Missing_Count": 23641,
+      "Missing_Pct": 48.06,
+      "Answered_Count": 25550,
+      "Answered_Pct": 51.94
+    },
+    {
+      "Section": "Technology Use",
+      "Variable": "PlatformHaveWorkedWith",
+      "Missing_Count": 24933,
+      "Missing_Pct": 50.69,
+      "Answered_Count": 24258,
+      "Answered_Pct": 49.31
+    },
+    {
+      "Section": "Technology Use",
+      "Variable": "WebframeHaveWorkedWith",
+      "Missing_Count": 26199,
+      "Missing_Pct": 53.26,
+      "Answered_Count": 22992,
+      "Answered_Pct": 46.74
+    },
+    {
+      "Section": "AI Module",
+      "Variable": "AISelect",
+      "Missing_Count": 15471,
+      "Missing_Pct": 31.45,
+      "Answered_Count": 33720,
+      "Answered_Pct": 68.55
+    },
+    {
+      "Section": "AI Module",
+      "Variable": "AISent",
+      "Missing_Count": 15724,
+      "Missing_Pct": 31.97,
+      "Answered_Count": 33467,
+      "Answered_Pct": 68.03
+    },
+    {
+      "Section": "AI Module",
+      "Variable": "AIAcc",
+      "Missing_Count": 15894,
+      "Missing_Pct": 32.31,
+      "Answered_Count": 33297,
+      "Answered_Pct": 67.69
+    },
+    {
+      "Section": "AI Module",
+      "Variable": "AIComplex",
+      "Missing_Count": 15908,
+      "Missing_Pct": 32.34,
+      "Answered_Count": 33283,
+      "Answered_Pct": 67.66
+    },
+    {
+      "Section": "AI Module",
+      "Variable": "AIAgents",
+      "Missing_Count": 17272,
+      "Missing_Pct": 35.11,
+      "Answered_Count": 31919,
+      "Answered_Pct": 64.89
+    },
+    {
+      "Section": "Compensation",
+      "Variable": "Currency",
+      "Missing_Count": 13754,
+      "Missing_Pct": 27.96,
+      "Answered_Count": 35437,
+      "Answered_Pct": 72.04
+    },
+    {
+      "Section": "Compensation",
+      "Variable": "CompTotal",
+      "Missing_Count": 24325,
+      "Missing_Pct": 49.45,
+      "Answered_Count": 24866,
+      "Answered_Pct": 50.55
+    },
+    {
+      "Section": "Compensation",
+      "Variable": "ConvertedCompYearly",
+      "Missing_Count": 25244,
+      "Missing_Pct": 51.32,
+      "Answered_Count": 23947,
+      "Answered_Pct": 48.68
+    },
+    {
+      "Section": "Compensation",
+      "Variable": "Comp_status",
+      "Missing_Count": 0,
+      "Missing_Pct": 0.0,
+      "Answered_Count": 49191,
+      "Answered_Pct": 100.0
+    }
+  ]
+}

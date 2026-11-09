@@ -1,0 +1,970 @@
+{
+  "metadata": {
+    "author": "Akash Das",
+    "phase": "Phase 5 of 8 \u2014 Analysis",
+    "milestone_status": "Review Corrections & Statistical Audit Completed",
+    "dataset": "Stack Overflow Developer Survey 2025",
+    "canonical_parquet": "data/processed/survey_results_cleaned.parquet",
+    "total_rows": 49191,
+    "total_columns": 176,
+    "raw_schema_bytes": 30403,
+    "raw_schema_sha256": "1d24951e04eab46c6f9fecef6ce8e6b32a0a14a3f0eecdcf62f70833a74b3ff8",
+    "raw_public_csv_bytes": 140893245,
+    "raw_public_csv_sha256": "2d1f65308877282edfb4470520eabbc08cb499118432a3dcec6a66c086aa2baa",
+    "processed_parquet_sha256": "16f5ce8e8f387405fa9635e44074dc468f44b82c0ee23287b2889be238fbbe52"
+  },
+  "rq1_ai_trust": {
+    "sample_flow_accounting": {
+      "total_survey_respondents": 49191,
+      "aiselect_answered": 33720,
+      "aiselect_missing": 15471,
+      "active_ai_users_definition": "AISelect in ['Yes, I use AI tools daily', 'Yes, I use AI tools weekly', 'Yes, I use AI tools monthly or infrequently']",
+      "active_ai_users_total": 26469,
+      "aiacc_answered_total": 33297,
+      "aiacc_missing_total": 15894,
+      "active_ai_users_answering_aiacc": 26126,
+      "active_ai_users_missing_aiacc": 343,
+      "nonactive_ai_users_answering_aiacc": 7171,
+      "complete_cases_seniority": 30780,
+      "complete_cases_language": 30681,
+      "discrepancy_explanation": "The preliminary briefing reported 19,733 active users based on an ad-hoc AIAgents + LearnCodeAI filter. The canonical survey question AISelect establishes 26,469 active users, of whom exactly 26,126 answered AIAcc."
+    },
+    "seniority_audit": {
+      "contingency_table": {
+        "Distrust": {
+          "1. <2 years (Entry)": 654,
+          "2. 2 to 5 years (Junior)": 2784,
+          "3. 6 to 10 years (Mid)": 3096,
+          "4. 11 to 20 years (Senior)": 4062,
+          "5. 21+ years (Veteran)": 3436,
+          "All": 14032
+        },
+        "Neutral": {
+          "1. <2 years (Entry)": 313,
+          "2. 2 to 5 years (Junior)": 1427,
+          "3. 6 to 10 years (Mid)": 1452,
+          "4. 11 to 20 years (Senior)": 1930,
+          "5. 21+ years (Veteran)": 1553,
+          "All": 6675
+        },
+        "Trust": {
+          "1. <2 years (Entry)": 522,
+          "2. 2 to 5 years (Junior)": 2196,
+          "3. 6 to 10 years (Mid)": 2259,
+          "4. 11 to 20 years (Senior)": 2925,
+          "5. 21+ years (Veteran)": 2171,
+          "All": 10073
+        },
+        "All": {
+          "1. <2 years (Entry)": 1489,
+          "2. 2 to 5 years (Junior)": 6407,
+          "3. 6 to 10 years (Mid)": 6807,
+          "4. 11 to 20 years (Senior)": 8917,
+          "5. 21+ years (Veteran)": 7160,
+          "All": 30780
+        }
+      },
+      "crude_odds_ratios": [
+        {
+          "bracket": "1. <2 years (Entry)",
+          "distrust_count": 654,
+          "not_distrust_count": 835,
+          "total_count": 1489,
+          "pct_distrust": 43.92,
+          "crude_odds_ratio": 1.0,
+          "ci_lower_95": 1.0,
+          "ci_upper_95": 1.0,
+          "se_ln_or": 0.0,
+          "z_score": 0.0,
+          "p_value": 1.0
+        },
+        {
+          "bracket": "2. 2 to 5 years (Junior)",
+          "distrust_count": 2784,
+          "not_distrust_count": 3623,
+          "total_count": 6407,
+          "pct_distrust": 43.45,
+          "crude_odds_ratio": 0.981,
+          "ci_lower_95": 0.876,
+          "ci_upper_95": 1.099,
+          "se_ln_or": 0.058,
+          "z_score": -0.33,
+          "p_value": 0.7419816901211889
+        },
+        {
+          "bracket": "3. 6 to 10 years (Mid)",
+          "distrust_count": 3096,
+          "not_distrust_count": 3711,
+          "total_count": 6807,
+          "pct_distrust": 45.48,
+          "crude_odds_ratio": 1.065,
+          "ci_lower_95": 0.951,
+          "ci_upper_95": 1.192,
+          "se_ln_or": 0.0576,
+          "z_score": 1.1,
+          "p_value": 0.27314427516549317
+        },
+        {
+          "bracket": "4. 11 to 20 years (Senior)",
+          "distrust_count": 4062,
+          "not_distrust_count": 4855,
+          "total_count": 8917,
+          "pct_distrust": 45.55,
+          "crude_odds_ratio": 1.068,
+          "ci_lower_95": 0.956,
+          "ci_upper_95": 1.193,
+          "se_ln_or": 0.0564,
+          "z_score": 1.17,
+          "p_value": 0.24182260211455092
+        },
+        {
+          "bracket": "5. 21+ years (Veteran)",
+          "distrust_count": 3436,
+          "not_distrust_count": 3724,
+          "total_count": 7160,
+          "pct_distrust": 47.99,
+          "crude_odds_ratio": 1.178,
+          "ci_lower_95": 1.053,
+          "ci_upper_95": 1.318,
+          "se_ln_or": 0.0573,
+          "z_score": 2.86,
+          "p_value": 0.004263782792865951
+        }
+      ],
+      "chi2_test": {
+        "statistic": 38.389765380409195,
+        "df": 8,
+        "p_value": 6.377181143014429e-06,
+        "cramers_v": 0.024972293087218433
+      }
+    },
+    "language_audit": {
+      "family_of_tests_m": 6,
+      "correction_methods": [
+        "Benjamini-Hochberg (FDR)",
+        "Bonferroni"
+      ],
+      "records": [
+        {
+          "language": "Rust",
+          "user_count": 4614,
+          "user_distrust_count": 2936,
+          "user_pct_distrust": 63.63,
+          "nonuser_count": 26067,
+          "nonuser_distrust_count": 11558,
+          "nonuser_pct_distrust": 44.34,
+          "crude_odds_ratio": 2.196,
+          "ci_lower_95": 2.059,
+          "ci_upper_95": 2.343,
+          "chi2_statistic": 585.43,
+          "raw_p_value": 2.4702515719650943e-129,
+          "bh_adjusted_p_value": 1.4821509431790567e-128,
+          "bonferroni_p_value": 1.4821509431790567e-128
+        },
+        {
+          "language": "C++",
+          "user_count": 7252,
+          "user_distrust_count": 3963,
+          "user_pct_distrust": 54.65,
+          "nonuser_count": 23429,
+          "nonuser_distrust_count": 10531,
+          "nonuser_pct_distrust": 44.95,
+          "crude_odds_ratio": 1.476,
+          "ci_lower_95": 1.4,
+          "ci_upper_95": 1.556,
+          "chi2_statistic": 208.99,
+          "raw_p_value": 2.279612720242813e-47,
+          "bh_adjusted_p_value": 6.838838160728438e-47,
+          "bonferroni_p_value": 1.3677676321456876e-46
+        },
+        {
+          "language": "Go",
+          "user_count": 5072,
+          "user_distrust_count": 2685,
+          "user_pct_distrust": 52.94,
+          "nonuser_count": 25609,
+          "nonuser_distrust_count": 11809,
+          "nonuser_pct_distrust": 46.11,
+          "crude_odds_ratio": 1.314,
+          "ci_lower_95": 1.237,
+          "ci_upper_95": 1.396,
+          "chi2_statistic": 79.12,
+          "raw_p_value": 5.841679565113216e-19,
+          "bh_adjusted_p_value": 1.1683359130226434e-18,
+          "bonferroni_p_value": 3.50500773906793e-18
+        },
+        {
+          "language": "Python",
+          "user_count": 17902,
+          "user_distrust_count": 8622,
+          "user_pct_distrust": 48.16,
+          "nonuser_count": 12779,
+          "nonuser_distrust_count": 5872,
+          "nonuser_pct_distrust": 45.95,
+          "crude_odds_ratio": 1.093,
+          "ci_lower_95": 1.044,
+          "ci_upper_95": 1.144,
+          "chi2_statistic": 14.64,
+          "raw_p_value": 0.000130413500326261,
+          "bh_adjusted_p_value": 0.000130413500326261,
+          "bonferroni_p_value": 0.0007824810019575661
+        },
+        {
+          "language": "JavaScript",
+          "user_count": 20427,
+          "user_distrust_count": 9376,
+          "user_pct_distrust": 45.9,
+          "nonuser_count": 10254,
+          "nonuser_distrust_count": 5118,
+          "nonuser_pct_distrust": 49.91,
+          "crude_odds_ratio": 0.851,
+          "ci_lower_95": 0.812,
+          "ci_upper_95": 0.893,
+          "chi2_statistic": 44.09,
+          "raw_p_value": 3.130213861182533e-11,
+          "bh_adjusted_p_value": 4.6953207917737994e-11,
+          "bonferroni_p_value": 1.8781283167095197e-10
+        },
+        {
+          "language": "TypeScript",
+          "user_count": 13495,
+          "user_distrust_count": 6193,
+          "user_pct_distrust": 45.89,
+          "nonuser_count": 17186,
+          "nonuser_distrust_count": 8301,
+          "nonuser_pct_distrust": 48.3,
+          "crude_odds_ratio": 0.908,
+          "ci_lower_95": 0.868,
+          "ci_upper_95": 0.95,
+          "chi2_statistic": 17.61,
+          "raw_p_value": 2.70632340778754e-05,
+          "bh_adjusted_p_value": 3.247588089345048e-05,
+          "bonferroni_p_value": 0.0001623794044672524
+        }
+      ]
+    },
+    "seniority_analysis": {
+      "sample_n": 30780,
+      "global_5x3_table": {
+        "description": "5 WorkExp brackets x 3 AIAcc tiers (Distrust, Neutral, Trust)",
+        "observed_counts": {
+          "1. Entry (<2 yrs)": {
+            "Distrust": 654,
+            "Neutral": 313,
+            "Trust": 522
+          },
+          "2. Junior (2-5 yrs)": {
+            "Distrust": 2784,
+            "Neutral": 1427,
+            "Trust": 2196
+          },
+          "3. Mid (6-10 yrs)": {
+            "Distrust": 3096,
+            "Neutral": 1452,
+            "Trust": 2259
+          },
+          "4. Senior (11-20 yrs)": {
+            "Distrust": 4062,
+            "Neutral": 1930,
+            "Trust": 2925
+          },
+          "5. Veteran (>20 yrs)": {
+            "Distrust": 3436,
+            "Neutral": 1553,
+            "Trust": 2171
+          }
+        },
+        "expected_counts": {
+          "1. Entry (<2 yrs)": {
+            "Distrust": 678.81,
+            "Neutral": 322.91,
+            "Trust": 487.29
+          },
+          "2. Junior (2-5 yrs)": {
+            "Distrust": 2920.83,
+            "Neutral": 1389.43,
+            "Trust": 2096.74
+          },
+          "3. Mid (6-10 yrs)": {
+            "Distrust": 3103.18,
+            "Neutral": 1476.18,
+            "Trust": 2227.64
+          },
+          "4. Senior (11-20 yrs)": {
+            "Distrust": 4065.09,
+            "Neutral": 1933.75,
+            "Trust": 2918.16
+          },
+          "5. Veteran (>20 yrs)": {
+            "Distrust": 3264.1,
+            "Neutral": 1552.73,
+            "Trust": 2343.17
+          }
+        },
+        "chi2_statistic": 38.3898,
+        "degrees_of_freedom": 8,
+        "p_value": 6.377181143014429e-06,
+        "cramers_v": 0.02497
+      },
+      "collapsed_5x2_table": {
+        "description": "5 WorkExp brackets x 2 binary tiers (Distrust vs Not Distrust)",
+        "observed_counts": {
+          "1. Entry (<2 yrs)": {
+            "Distrust": 654,
+            "Not Distrust": 835
+          },
+          "2. Junior (2-5 yrs)": {
+            "Distrust": 2784,
+            "Not Distrust": 3623
+          },
+          "3. Mid (6-10 yrs)": {
+            "Distrust": 3096,
+            "Not Distrust": 3711
+          },
+          "4. Senior (11-20 yrs)": {
+            "Distrust": 4062,
+            "Not Distrust": 4855
+          },
+          "5. Veteran (>20 yrs)": {
+            "Distrust": 3436,
+            "Not Distrust": 3724
+          }
+        },
+        "expected_counts": {
+          "1. Entry (<2 yrs)": {
+            "Distrust": 678.81,
+            "Not Distrust": 810.19
+          },
+          "2. Junior (2-5 yrs)": {
+            "Distrust": 2920.83,
+            "Not Distrust": 3486.17
+          },
+          "3. Mid (6-10 yrs)": {
+            "Distrust": 3103.18,
+            "Not Distrust": 3703.82
+          },
+          "4. Senior (11-20 yrs)": {
+            "Distrust": 4065.09,
+            "Not Distrust": 4851.91
+          },
+          "5. Veteran (>20 yrs)": {
+            "Distrust": 3264.1,
+            "Not Distrust": 3895.9
+          }
+        },
+        "chi2_statistic": 30.1175,
+        "degrees_of_freedom": 4,
+        "p_value": 4.632052167085196e-06,
+        "cramers_v": 0.03128
+      },
+      "crude_odds_ratios": [
+        {
+          "bracket": "1. Entry (<2 yrs)",
+          "n_total": 1489,
+          "n_distrust": 654,
+          "pct_distrust": 43.92,
+          "crude_odds_ratio": 1.0,
+          "ci_lower_95": 0.865,
+          "ci_upper_95": 1.156
+        },
+        {
+          "bracket": "2. Junior (2-5 yrs)",
+          "n_total": 6407,
+          "n_distrust": 2784,
+          "pct_distrust": 43.45,
+          "crude_odds_ratio": 0.981,
+          "ci_lower_95": 0.876,
+          "ci_upper_95": 1.099
+        },
+        {
+          "bracket": "3. Mid (6-10 yrs)",
+          "n_total": 6807,
+          "n_distrust": 3096,
+          "pct_distrust": 45.48,
+          "crude_odds_ratio": 1.065,
+          "ci_lower_95": 0.951,
+          "ci_upper_95": 1.193
+        },
+        {
+          "bracket": "4. Senior (11-20 yrs)",
+          "n_total": 8917,
+          "n_distrust": 4062,
+          "pct_distrust": 45.55,
+          "crude_odds_ratio": 1.068,
+          "ci_lower_95": 0.956,
+          "ci_upper_95": 1.193
+        },
+        {
+          "bracket": "5. Veteran (>20 yrs)",
+          "n_total": 7160,
+          "n_distrust": 3436,
+          "pct_distrust": 47.99,
+          "crude_odds_ratio": 1.178,
+          "ci_lower_95": 1.053,
+          "ci_upper_95": 1.318
+        }
+      ]
+    }
+  },
+  "rq2_tech_compensation": {
+    "estimation_sample_complete_cases": 22769,
+    "salary_range_usd": [
+      1000.0,
+      1000000.0
+    ],
+    "specification": "ln(ConvertedCompYearly) ~ Tech_Rust + Tech_Go + Tech_Python + Tech_TypeScript + Tech_AWS + Tech_Docker + WorkExp_num + WorkExp_num_sq + Country_grouped + DevType_grouped",
+    "percentage_conversion_formula": "100 * (exp(beta) - 1)",
+    "r_squared": 0.384581366213011,
+    "adj_r_squared": 0.38404029127562134,
+    "f_statistic": 710.7728331834704,
+    "f_p_value": 0.0,
+    "residual_std_err": 0.8395587418145538,
+    "breusch_pagan_lm_stat": 2269.62883606869,
+    "breusch_pagan_df": 20,
+    "breusch_pagan_p_value": 0.0,
+    "residuals_skewness": -1.1377443640172216,
+    "residuals_excess_kurtosis": 4.473796052642819,
+    "technology_associations": [
+      {
+        "technology": "Rust",
+        "beta": 0.12034192386999622,
+        "pct_effect": 12.788243558270684,
+        "conv_std_error": 0.0172210370682615,
+        "conv_t_stat": 6.988076466764437,
+        "conv_p_value": 2.786804988378818e-12,
+        "robust_hc1_se": 0.016610071826149306,
+        "robust_hc1_t_stat": 7.245117608735527,
+        "robust_hc1_p_value": 4.3206411997434624e-13,
+        "pct_robust_ci_lower": 9.175531429143401,
+        "pct_robust_ci_upper": 16.520503435479394,
+        "bh_adjusted_p_value": 8.641282399486925e-13,
+        "bonferroni_p_value": 2.5923847198460773e-12
+      },
+      {
+        "technology": "Go",
+        "beta": 0.06863794595877329,
+        "pct_effect": 7.104836155403849,
+        "conv_std_error": 0.01611320336060713,
+        "conv_t_stat": 4.259733115922586,
+        "conv_p_value": 2.0467113893490348e-05,
+        "robust_hc1_se": 0.01569664156976524,
+        "robust_hc1_t_stat": 4.37277908485744,
+        "robust_hc1_p_value": 1.226748437198848e-05,
+        "pct_robust_ci_lower": 3.8599419560946258,
+        "pct_robust_ci_upper": 10.45111052272012,
+        "bh_adjusted_p_value": 1.4720981246386177e-05,
+        "bonferroni_p_value": 7.360490623193088e-05
+      },
+      {
+        "technology": "Python",
+        "beta": 0.013122560801270616,
+        "pct_effect": 1.320903946206875,
+        "conv_std_error": 0.012020026567143067,
+        "conv_t_stat": 1.0917247751466161,
+        "conv_p_value": 0.2749540920780935,
+        "robust_hc1_se": 0.012291867384450357,
+        "robust_hc1_t_stat": 1.067580733735471,
+        "robust_hc1_p_value": 0.285709678131195,
+        "pct_robust_ci_lower": -1.0909116026512455,
+        "pct_robust_ci_upper": 3.7915296037816404,
+        "bh_adjusted_p_value": 0.285709678131195,
+        "bonferroni_p_value": 1.0
+      },
+      {
+        "technology": "TypeScript",
+        "beta": 0.07234748499603674,
+        "pct_effect": 7.5028835559373785,
+        "conv_std_error": 0.012608584829489055,
+        "conv_t_stat": 5.737954415536777,
+        "conv_p_value": 9.582689817406927e-09,
+        "robust_hc1_se": 0.012362763334409135,
+        "robust_hc1_t_stat": 5.852048044523576,
+        "robust_hc1_p_value": 4.855563084154727e-09,
+        "pct_robust_ci_lower": 4.929332514937745,
+        "pct_robust_ci_upper": 10.139554839884223,
+        "bh_adjusted_p_value": 7.2833446262320905e-09,
+        "bonferroni_p_value": 2.9133378504928362e-08
+      },
+      {
+        "technology": "AWS",
+        "beta": 0.10357751675762207,
+        "pct_effect": 10.913176633115352,
+        "conv_std_error": 0.012900327551003678,
+        "conv_t_stat": 8.029060994622844,
+        "conv_p_value": 9.822151954733214e-16,
+        "robust_hc1_se": 0.012766134766326702,
+        "robust_hc1_t_stat": 8.113459449827289,
+        "robust_hc1_p_value": 4.919861776893422e-16,
+        "pct_robust_ci_lower": 8.172431098566602,
+        "pct_robust_ci_upper": 13.723363946949863,
+        "bh_adjusted_p_value": 1.4759585330680267e-15,
+        "bonferroni_p_value": 2.9519170661360534e-15
+      },
+      {
+        "technology": "Docker",
+        "beta": 0.12372027106945979,
+        "pct_effect": 13.169925769524093,
+        "conv_std_error": 0.012958322730149066,
+        "conv_t_stat": 9.547552846604908,
+        "conv_p_value": 1.3279595048508486e-21,
+        "robust_hc1_se": 0.013041982589701405,
+        "robust_hc1_t_stat": 9.486308559187577,
+        "robust_hc1_p_value": 2.3936075779815297e-21,
+        "pct_robust_ci_lower": 10.313756859853562,
+        "pct_robust_ci_upper": 16.10004466578545,
+        "bh_adjusted_p_value": 1.4361645467889178e-20,
+        "bonferroni_p_value": 1.4361645467889178e-20
+      }
+    ],
+    "vif_diagnostics": [
+      {
+        "variable": "Tech_Rust",
+        "vif": 1.080690922505596,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Tech_Go",
+        "vif": 1.124944334608323,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Tech_Python",
+        "vif": 1.1618133257890584,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Tech_TypeScript",
+        "vif": 1.2632100762828413,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Tech_AWS",
+        "vif": 1.225801061591568,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Tech_Docker",
+        "vif": 1.3347406518647087,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "WorkExp_num",
+        "vif": 7.076586579495374,
+        "risk_level": "Moderate (5-10)"
+      },
+      {
+        "variable": "WorkExp_num_sq",
+        "vif": 6.941296099132879,
+        "risk_level": "Moderate (5-10)"
+      },
+      {
+        "variable": "Country_grouped_Canada",
+        "vif": 1.046986804851979,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Country_grouped_France",
+        "vif": 1.0496045278936035,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Country_grouped_Germany",
+        "vif": 1.0959621169616098,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Country_grouped_India",
+        "vif": 1.0684198112376961,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Country_grouped_Netherlands",
+        "vif": 1.0317823740207808,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Country_grouped_United Kingdom of Great Britain and Northern Ireland",
+        "vif": 1.0748443852779483,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "Country_grouped_United States of America",
+        "vif": 1.198860128856673,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "DevType_grouped_DevOps engineer or professional",
+        "vif": 1.0688737679139377,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "DevType_grouped_Developer, back-end",
+        "vif": 1.2456132676786074,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "DevType_grouped_Developer, front-end",
+        "vif": 1.1591103694222824,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "DevType_grouped_Developer, full-stack",
+        "vif": 1.3858094896417545,
+        "risk_level": "Low (<5)"
+      },
+      {
+        "variable": "DevType_grouped_Engineering manager",
+        "vif": 1.060790360391106,
+        "risk_level": "Low (<5)"
+      }
+    ]
+  },
+  "rq3_ai_agents": {
+    "jobsat_anova": {
+      "n_analyzed": 23766,
+      "ss_between": 226.2474675363983,
+      "ss_within": 92545.99270750358,
+      "ss_total": 92772.24017503997,
+      "df_between": 5,
+      "df_within": 23760,
+      "f_statistic": 11.617228734376026,
+      "p_value": 3.019346613659932e-11,
+      "eta_squared": 0.0024387410189677552,
+      "omega_squared": 0.0022287229388934285,
+      "practical_magnitude_interpretation": "Eta-squared of 0.0024 indicates agent adoption explains only 0.24% of variance in job satisfaction. The 0.252-point elevation has a Cohen's d of 0.128, representing a small practical effect size despite strong statistical significance.",
+      "group_summary": [
+        {
+          "group": "No, I use AI exclusively in copilot/autocomplete mode",
+          "count": 3402,
+          "mean": 7.210758377425044,
+          "median": 8.0,
+          "std": 1.8702302848193029,
+          "se": 0.0320647553497973,
+          "ci_lower_95": 7.147912611270634,
+          "ci_upper_95": 7.273604143579455
+        },
+        {
+          "group": "No, and I don't plan to",
+          "count": 8711,
+          "mean": 7.148777407875101,
+          "median": 8.0,
+          "std": 2.0336205286582443,
+          "se": 0.021788930338939222,
+          "ci_lower_95": 7.106071888812272,
+          "ci_upper_95": 7.19148292693793
+        },
+        {
+          "group": "No, but I plan to",
+          "count": 4105,
+          "mean": 7.146650426309379,
+          "median": 7.0,
+          "std": 1.987394267748101,
+          "se": 0.03101897566840621,
+          "ci_lower_95": 7.0858543506824265,
+          "ci_upper_95": 7.207446501936332
+        },
+        {
+          "group": "Yes, I use AI agents at work daily",
+          "count": 3527,
+          "mean": 7.400907286645874,
+          "median": 8.0,
+          "std": 1.9514176745730414,
+          "se": 0.03285848263537084,
+          "ci_lower_95": 7.336505843585923,
+          "ci_upper_95": 7.465308729705826
+        },
+        {
+          "group": "Yes, I use AI agents at work monthly or infrequently",
+          "count": 1842,
+          "mean": 7.2073832790445165,
+          "median": 8.0,
+          "std": 2.0332354732366626,
+          "se": 0.04737430646390397,
+          "ci_lower_95": 7.114531343850297,
+          "ci_upper_95": 7.300235214238736
+        },
+        {
+          "group": "Yes, I use AI agents at work weekly",
+          "count": 2179,
+          "mean": 7.362092703074805,
+          "median": 8.0,
+          "std": 1.8409320184722613,
+          "se": 0.039437478165977445,
+          "ci_lower_95": 7.284796665618703,
+          "ci_upper_95": 7.439388740530907
+        }
+      ],
+      "post_hoc_pairwise_vs_nonplanners": [
+        {
+          "comparison_group": "Yes, I use AI agents at work daily",
+          "n_group": 3527,
+          "mean_jobsat": 7.401,
+          "diff_vs_nonplanners": 0.252,
+          "se_diff": 0.0394,
+          "ci_lower_95": 0.175,
+          "ci_upper_95": 0.329,
+          "cohens_d": 0.128,
+          "raw_p_value": 1.5432667476817317e-10,
+          "bonferroni_p_value": 7.716333738408658e-10
+        },
+        {
+          "comparison_group": "Yes, I use AI agents at work weekly",
+          "n_group": 2179,
+          "mean_jobsat": 7.362,
+          "diff_vs_nonplanners": 0.213,
+          "se_diff": 0.0473,
+          "ci_lower_95": 0.121,
+          "ci_upper_95": 0.306,
+          "cohens_d": 0.108,
+          "raw_p_value": 6.4074614024835995e-06,
+          "bonferroni_p_value": 3.2037307012417996e-05
+        },
+        {
+          "comparison_group": "Yes, I use AI agents at work monthly or infrequently",
+          "n_group": 1842,
+          "mean_jobsat": 7.207,
+          "diff_vs_nonplanners": 0.059,
+          "se_diff": 0.0506,
+          "ci_lower_95": -0.041,
+          "ci_upper_95": 0.158,
+          "cohens_d": 0.03,
+          "raw_p_value": 0.24689904565886275,
+          "bonferroni_p_value": 1.0
+        },
+        {
+          "comparison_group": "No, I use AI exclusively in copilot/autocomplete mode",
+          "n_group": 3402,
+          "mean_jobsat": 7.211,
+          "diff_vs_nonplanners": 0.062,
+          "se_diff": 0.0399,
+          "ci_lower_95": -0.016,
+          "ci_upper_95": 0.14,
+          "cohens_d": 0.031,
+          "raw_p_value": 0.12033206369088863,
+          "bonferroni_p_value": 0.6016603184544431
+        },
+        {
+          "comparison_group": "No, but I plan to",
+          "n_group": 4105,
+          "mean_jobsat": 7.147,
+          "diff_vs_nonplanners": -0.002,
+          "se_diff": 0.0374,
+          "ci_lower_95": -0.075,
+          "ci_upper_95": 0.071,
+          "cohens_d": -0.001,
+          "raw_p_value": 0.9546029102809276,
+          "bonferroni_p_value": 1.0
+        }
+      ]
+    },
+    "sentiment_odds_ratio_audit": {
+      "comparison": "Daily AI Agent Users vs Non-Planners",
+      "contingency_table_2x2": {
+        "daily_agent_favorable": 4075,
+        "daily_agent_nonfavorable": 416,
+        "nonplanner_favorable": 3801,
+        "nonplanner_nonfavorable": 8262
+      },
+      "odds_ratio": 21.292,
+      "ci_lower_95": 19.114,
+      "ci_upper_95": 23.719,
+      "se_ln_or": 0.0551,
+      "z_score": 55.53,
+      "p_value": 0.0,
+      "separation_sparse_check": "All cell counts > 400. Zero risk of separation or sparse-cell bias."
+    }
+  },
+  "rq4_remote_work": {
+    "missingness_statement": "RemoteWork nonresponse is associated with respondent branch. The observed association suggests that missingness is not MCAR with respect to MainBranch. The available data alone cannot distinguish MAR from MNAR.",
+    "contingency_table_mainbranch": {
+      "Answered": {
+        "I am a developer by profession": 28286,
+        "I am learning to code": 552,
+        "I am not primarily a developer, but I write code sometimes as part of my work/studies": 3172,
+        "I code primarily as a hobby": 530,
+        "I used to be a developer by profession, but no longer am": 642,
+        "I work with developers or my work supports developers but am not a developer by profession": 598,
+        "All": 33780
+      },
+      "Missing": {
+        "I am a developer by profession": 9181,
+        "I am learning to code": 2033,
+        "I am not primarily a developer, but I write code sometimes as part of my work/studies": 1722,
+        "I code primarily as a hobby": 1394,
+        "I used to be a developer by profession, but no longer am": 683,
+        "I work with developers or my work supports developers but am not a developer by profession": 398,
+        "All": 15411
+      },
+      "All": {
+        "I am a developer by profession": 37467,
+        "I am learning to code": 2585,
+        "I am not primarily a developer, but I write code sometimes as part of my work/studies": 4894,
+        "I code primarily as a hobby": 1924,
+        "I used to be a developer by profession, but no longer am": 1325,
+        "I work with developers or my work supports developers but am not a developer by profession": 996,
+        "All": 49191
+      }
+    },
+    "complete_cases_model_c": 20236,
+    "model_c_r_squared": 0.4253751000005762,
+    "model_c_adj_r_squared": 0.42486348857454903,
+    "breusch_pagan_p_value": 0.0,
+    "conditional_compensation_differences": [
+      {
+        "arrangement": "Hybrid (some in-person, leans heavy to flexibility)",
+        "beta": 0.29609376037241786,
+        "pct_difference_vs_inperson": 34.45962207644704,
+        "robust_hc1_se": 0.021346046776466437,
+        "robust_hc1_t_stat": 13.87112862035208,
+        "robust_hc1_p_value": 9.477372463315e-44,
+        "pct_robust_ci_lower": 28.950223188009193,
+        "pct_robust_ci_upper": 40.204410058145015
+      },
+      {
+        "arrangement": "Hybrid (some remote, leans heavy to in-person)",
+        "beta": 0.29162474213557144,
+        "pct_difference_vs_inperson": 33.86006029740676,
+        "robust_hc1_se": 0.021282403663436054,
+        "robust_hc1_t_stat": 13.702622445630677,
+        "robust_hc1_p_value": 9.79226404362165e-43,
+        "pct_robust_ci_lower": 28.391242372727653,
+        "pct_robust_ci_upper": 39.56182222154079
+      },
+      {
+        "arrangement": "Remote",
+        "beta": 0.2673527632917605,
+        "pct_difference_vs_inperson": 30.65012507303342,
+        "robust_hc1_se": 0.02144936521435533,
+        "robust_hc1_t_stat": 12.464367155855522,
+        "robust_hc1_p_value": 1.1679527660945601e-35,
+        "pct_robust_ci_lower": 25.271447851563078,
+        "pct_robust_ci_upper": 36.2597421387294
+      },
+      {
+        "arrangement": "Your choice (very flexible, you can come in when you want or just as needed)",
+        "beta": 0.29316968549812755,
+        "pct_difference_vs_inperson": 34.06702634331764,
+        "robust_hc1_se": 0.023903193730514333,
+        "robust_hc1_t_stat": 12.264875095911266,
+        "robust_hc1_p_value": 1.3982773863139817e-34,
+        "pct_robust_ci_lower": 27.930925315975674,
+        "pct_robust_ci_upper": 40.49744038156569
+      }
+    ],
+    "k_explanatory_variables": 18,
+    "p_estimated_parameters_including_intercept": 19,
+    "df_model": 18,
+    "df_residual": 20217,
+    "f_statistic": 831.4417512208854,
+    "f_statistic_type": "Conventional OLS F-statistic (not robust Wald F)",
+    "breusch_pagan_stat": 2054.6440541905367,
+    "breusch_pagan_df": 18
+  },
+  "rq2_compensation_mincer": {
+    "sample_accounting": {
+      "qualified_positive_salaries": 23947,
+      "trimmed_below_1000": 724,
+      "trimmed_above_1000000": 46,
+      "total_trimmed": 770,
+      "retained_sample_n": 23177,
+      "retention_rate_pct": 96.78,
+      "model3_estimation_complete_cases": 22769
+    },
+    "model_diagnostics": {
+      "k_explanatory_variables": 20,
+      "p_estimated_parameters_including_intercept": 21,
+      "df_model": 20,
+      "df_residual": 22748,
+      "r_squared": 0.384581366213011,
+      "adj_r_squared": 0.38404029127562134,
+      "f_statistic": 710.7728331834704,
+      "f_statistic_type": "Conventional OLS F-statistic (not robust Wald F)",
+      "breusch_pagan_stat": 2269.62883606869,
+      "breusch_pagan_df": 20,
+      "breusch_pagan_p_val": 0.0,
+      "leverage_threshold_2p_n": 0.001845,
+      "high_leverage_count": 1797,
+      "high_leverage_pct": 7.89,
+      "cooks_distance_threshold_4_n": 0.00017568,
+      "cooks_distance_distribution": {
+        "min": 1.0785094873066913e-14,
+        "p25": 1.8025615516328104e-06,
+        "median": 8.350989517893635e-06,
+        "p75": 2.8615294633232897e-05,
+        "mean": 8.632287066039994e-05,
+        "max": 0.4051674110983641
+      },
+      "cooks_distance_exceeding_count": 1039,
+      "cooks_distance_exceeding_pct": 4.56
+    },
+    "sensitivity_analysis": {
+      "clean_sample_n": 21730,
+      "clean_r_squared": 0.4845122826713608,
+      "clean_adj_r_squared": 0.48403737575042616,
+      "clean_f_statistic": 1020.225777543294,
+      "technology_comparison": [
+        {
+          "technology": "Tech_Rust",
+          "full_model_beta": 0.1203,
+          "full_model_hc1_se": 0.0166,
+          "full_model_p_val": 4.3206411997434624e-13,
+          "clean_model_beta": 0.1217,
+          "clean_model_hc1_se": 0.0123,
+          "clean_model_p_val": 2.858859464443394e-23,
+          "beta_pct_diff": 1.17
+        },
+        {
+          "technology": "Tech_Go",
+          "full_model_beta": 0.0686,
+          "full_model_hc1_se": 0.0157,
+          "full_model_p_val": 1.226748437198848e-05,
+          "clean_model_beta": 0.0942,
+          "clean_model_hc1_se": 0.0115,
+          "clean_model_p_val": 2.682981979749771e-16,
+          "beta_pct_diff": 37.22
+        },
+        {
+          "technology": "Tech_Python",
+          "full_model_beta": 0.0131,
+          "full_model_hc1_se": 0.0123,
+          "full_model_p_val": 0.285709678131195,
+          "clean_model_beta": 0.0141,
+          "clean_model_hc1_se": 0.0094,
+          "clean_model_p_val": 0.13609055446168195,
+          "beta_pct_diff": 7.16
+        },
+        {
+          "technology": "Tech_TypeScript",
+          "full_model_beta": 0.0723,
+          "full_model_hc1_se": 0.0124,
+          "full_model_p_val": 4.855563084154727e-09,
+          "clean_model_beta": 0.0732,
+          "clean_model_hc1_se": 0.0095,
+          "clean_model_p_val": 1.4600293831320103e-14,
+          "beta_pct_diff": 1.21
+        },
+        {
+          "technology": "Tech_AWS",
+          "full_model_beta": 0.1036,
+          "full_model_hc1_se": 0.0128,
+          "full_model_p_val": 4.919861776893422e-16,
+          "clean_model_beta": 0.0937,
+          "clean_model_hc1_se": 0.0095,
+          "clean_model_p_val": 8.692711520195229e-23,
+          "beta_pct_diff": -9.5
+        },
+        {
+          "technology": "Tech_Docker",
+          "full_model_beta": 0.1237,
+          "full_model_hc1_se": 0.013,
+          "full_model_p_val": 2.3936075779815297e-21,
+          "clean_model_beta": 0.095,
+          "clean_model_hc1_se": 0.0101,
+          "clean_model_p_val": 5.66757483834245e-21,
+          "beta_pct_diff": -23.18
+        }
+      ],
+      "sensitivity_interpretation": "Coefficient signs and significance classifications are preserved across all six evaluated technologies, but coefficient magnitudes and relative rankings change noticeably. Specifically, Docker's coefficient decreases by 23.18% (from +0.1237, rank 1 in the full model, to +0.0950, rank 2 in the screened refit), while Go's coefficient increases by 37.22% (from +0.0686, rank 5 in the full model, to +0.0942, rank 3 in the screened refit), making Rust the highest-ranked technology premium (+0.1217, +1.17%). Observations with Cook's distance exceeding 4/n (1,039 observations, 4.56%) exceed a diagnostic screening threshold and are not characterized as invalid records. This sensitivity refit demonstrates that point estimates and rankings are sensitive to observations exceeding the diagnostic screening threshold; it does not establish that estimates are unaffected by influential observations, and serves as an exploratory diagnostic check rather than a definitive or inherently cleaner model."
+    }
+  }
+}
