@@ -18,6 +18,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from app.data_provider import get_survey_dataset, get_survey_overview_kpis  # noqa: E402
 from app.components.kpi_cards import render_survey_executive_kpis  # noqa: E402
+from app.components.theme import apply_custom_theme  # noqa: E402
 
 st.set_page_config(
     page_title="Poll Results Visualizer - SO 2025",
@@ -28,6 +29,7 @@ st.set_page_config(
 
 
 def main():
+    apply_custom_theme()
     st.title("📊 Stack Overflow Developer Survey 2025 Visualizer")
     st.caption("A modular, interactive analytics platform for public opinion and survey research.")
 

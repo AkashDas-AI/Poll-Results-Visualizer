@@ -20,6 +20,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from app.data_provider import get_survey_dataset, get_survey_overview_kpis  # noqa: E402
 from app.components.kpi_cards import render_survey_executive_kpis  # noqa: E402
 from app.components.filters import render_survey_demographic_filters  # noqa: E402
+from app.components.theme import apply_custom_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_horizontal_bar_with_denominators,
     CHART_FONT_FAMILY,
@@ -46,6 +47,7 @@ AGE_ORDER = [
 
 
 def main():
+    apply_custom_theme()
     st.title("📈 Survey Fieldwork & Demographics Overview")
     st.caption("Executive telemetry, demographic composition, and population denominator accounting.")
 
@@ -115,8 +117,12 @@ def main():
             fig_age.update_layout(
                 font=dict(family=CHART_FONT_FAMILY),
                 showlegend=False,
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
                 yaxis_title="Share of Answered Respondents (%)",
                 xaxis_title="",
+                xaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
+                yaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
                 margin=dict(l=20, r=20, t=50, b=30),
             )
             st.plotly_chart(fig_age, use_container_width=True)
@@ -189,7 +195,7 @@ def main():
                 go.Box(
                     x=yc_series,
                     name="Years Coding (YearsCode_num)",
-                    marker_color="#1f77b4",
+                    marker_color="#3B82F6",
                     boxpoints=False,
                 )
             )
@@ -197,7 +203,7 @@ def main():
                 go.Box(
                     x=we_series,
                     name="Professional Work Exp (WorkExp_num)",
-                    marker_color="#ff7f0e",
+                    marker_color="#22C55E",
                     boxpoints=False,
                 )
             )
@@ -205,7 +211,10 @@ def main():
                 title="<b>Experience Distributions: Total Coding vs. Professional Work Experience</b>",
                 template=DEFAULT_CHART_TEMPLATE,
                 font=dict(family=CHART_FONT_FAMILY),
+                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="rgba(0,0,0,0)",
                 xaxis_title="Years of Experience",
+                xaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
                 margin=dict(l=20, r=20, t=50, b=30),
                 height=260,
             )

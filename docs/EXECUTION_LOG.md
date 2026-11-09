@@ -1361,3 +1361,51 @@ Following Project Lead review of initial Phase 7 deliverables, material numerica
   - Added `docs/INTERVIEW_PREPARATION.md` and `docs/PORTFOLIO_PRESENTATION_GUIDE.md` to `.gitignore`.
   - Untracked both preparation files from git index via `git rm --cached`, ensuring private candidate preparation materials are retained locally on disk for personal study while never being pushed to GitHub.
 - **Git Status:** 71 public project files tracked for GitHub publication. Working tree clean of private files. Remote push paused awaiting user-provided repository URL.
+
+---
+
+## [2026-11-09] - Feature Enhancement: Professional Dark Theme Implementation
+
+**Authority:** Feature Enhancement Authorization by Project Lead (ChatGPT).  
+**Author:** Akash Das  
+**Milestone:** Post-Phase 8 UI/UX Polish - Professional Dark Mode  
+**Status:** Verification Complete. Committed & Pushed to Remote.  
+**Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`  
+
+### 1. Scope and Design Objectives
+- Introduce a modern, recruiter-ready, professional dark analytics-dashboard theme for the Streamlit dashboard as the default visual experience while preserving light theme usability through Streamlit settings.
+- Implement an enterprise Business Intelligence color palette:
+  - Main application background: `#0E1117`
+  - Sidebar background: `#161B26`
+  - Card background: `#1C2433`
+  - Primary text: `#F1F5F9`
+  - Secondary text: `#A0AEC0`
+  - Primary accent: `#3B82F6`
+  - Positive indicators: `#22C55E`
+  - Warning indicators: `#F59E0B`
+  - Borders and separators: `#30394A`
+- Scope boundary enforcement:
+  - Strictly presentation-only UI enhancement.
+  - Zero modifications to source datasets, data cleaning, analysis modules, statistical calculations, approved research findings, models, filters, or exports.
+  - No fragile CSS hacks; use Streamlit native configuration (`.streamlit/config.toml`) and clean scoped CSS injection.
+  - Update all Plotly figures to use transparent backgrounds (`paper_bgcolor="rgba(0,0,0,0)"`, `plot_bgcolor="rgba(0,0,0,0)"`), `plotly_dark` template, and subtle gridlines (`CHART_GRID_COLOR = "rgba(128, 128, 128, 0.15)"`) for dual dark/light adaptability.
+
+### 2. Files Created and Modified
+- **Created:**
+  - `app/components/theme.py`: Enterprise BI dark theme color palette constants and scoped CSS injection function (`apply_custom_theme()`) for KPI cards (`stMetric`), secondary captions, dividers, dataframes, expanders, and active tabs.
+- **Modified:**
+  - `.streamlit/config.toml`: Configured Streamlit `[theme]` with `base = "dark"`, `primaryColor = "#3B82F6"`, `backgroundColor = "#0E1117"`, `secondaryBackgroundColor = "#161B26"`, `textColor = "#F1F5F9"`, `borderColor = "#30394A"`, `font = "sans serif"`, `dataframeBorderColor = "#30394A"`, and `dataframeHeaderBackgroundColor = "#161B26"`.
+  - `app/components/charts.py`: Updated `DEFAULT_CHART_TEMPLATE = "plotly_dark"`, added `CHART_GRID_COLOR = "rgba(128, 128, 128, 0.15)"`, set transparent backgrounds across all 10 chart generators, and refined accent marker colors (`#3B82F6`, `#22C55E`, `#F59E0B`).
+  - `app/streamlit_app.py`: Applied `apply_custom_theme()`.
+  - `app/pages/1_Overview.py`: Applied `apply_custom_theme()`, updated standalone Plotly age and experience distribution figures with transparent backgrounds, subtle gridlines, and theme colors.
+  - `app/pages/2_Response_Analysis.py`: Applied `apply_custom_theme()`.
+  - `app/pages/3_Segment_Comparison.py`: Applied `apply_custom_theme()`, updated standalone box plot figures with transparent backgrounds, subtle gridlines, and palette colors.
+  - `app/pages/4_Data_Quality.py`: Applied `apply_custom_theme()`.
+
+### 3. Verification and Quality Gates
+- **Pytest Suite:** 93 passed out of 93 tests (100% pass rate in 12.07s).
+- **Flake8 Linting:** 0 errors / 0 warnings across all project code (`app`, `src`, `tests`).
+- **Streamlit Health Check:** Live HTTP health probe on `http://localhost:8508/_stcore/health` returned HTTP 200 OK (body: `ok`).
+- **Analytical Invariance:** SHA-256 hash of `data/processed/survey_results_cleaned.parquet` verified identical (`16f5ce8e8f387405fa9635e44074dc468f44b82c0ee23287b2889be238fbbe52`). All statistical outputs, models, and findings remain untouched.
+- **Git Commit & Remote Push:** Committed under `feat: add professional dark theme to Streamlit dashboard` and pushed to `origin main` at `https://github.com/AkashDas-AI/Poll-Results-Visualizer.git`.
+

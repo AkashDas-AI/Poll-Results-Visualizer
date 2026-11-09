@@ -17,7 +17,9 @@ import plotly.graph_objects as go
 from src.config import COL_OPTION, COL_SEGMENT
 
 CHART_FONT_FAMILY = "Arial, sans-serif"
-DEFAULT_CHART_TEMPLATE = "plotly_white"
+DEFAULT_CHART_TEMPLATE = "plotly_dark"
+CHART_BG_TRANSPARENT = "rgba(0,0,0,0)"
+CHART_GRID_COLOR = "rgba(128, 128, 128, 0.15)"
 
 
 def _empty_figure(message: str = "No data available matching active criteria") -> go.Figure:
@@ -30,10 +32,12 @@ def _empty_figure(message: str = "No data available matching active criteria") -
         x=0.5,
         y=0.5,
         showarrow=False,
-        font=dict(size=14, color="gray", family=CHART_FONT_FAMILY),
+        font=dict(size=14, color="#A0AEC0", family=CHART_FONT_FAMILY),
     )
     fig.update_layout(
         template=DEFAULT_CHART_TEMPLATE,
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         xaxis=dict(showgrid=False, showticklabels=False, zeroline=False),
         yaxis=dict(showgrid=False, showticklabels=False, zeroline=False),
         margin=dict(l=20, r=20, t=50, b=30),
@@ -71,10 +75,16 @@ def plot_distribution_bar(dist_df: pd.DataFrame, title: str = "Response Distribu
     fig.update_layout(
         showlegend=False,
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         xaxis_title="Share of Responses (%)",
         yaxis_title="",
         margin=dict(l=20, r=20, t=50, b=30),
-        xaxis=dict(range=[0, max(sorted_df["percentage"].max() * 1.15, 10)]),
+        xaxis=dict(
+            range=[0, max(sorted_df["percentage"].max() * 1.15, 10)],
+            gridcolor=CHART_GRID_COLOR,
+        ),
+        yaxis=dict(gridcolor=CHART_GRID_COLOR),
     )
     return fig
 
@@ -104,6 +114,8 @@ def plot_distribution_pie(dist_df: pd.DataFrame, title: str = "Share Breakdown")
     fig.update_traces(textposition="inside", textinfo="percent+label")
     fig.update_layout(
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         margin=dict(l=20, r=20, t=50, b=30),
     )
     return fig
@@ -136,10 +148,14 @@ def plot_segment_breakdown_bar(segment_df: pd.DataFrame, title: str = "Segment B
     )
     fig.update_layout(
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         xaxis_title="Demographic Segment",
         yaxis_title="Share within Cohort (%)",
         margin=dict(l=20, r=20, t=50, b=30),
         legend_title="Selected Option",
+        xaxis=dict(gridcolor=CHART_GRID_COLOR),
+        yaxis=dict(gridcolor=CHART_GRID_COLOR),
     )
     return fig
 
@@ -168,9 +184,13 @@ def plot_trend_line(trend_df: pd.DataFrame, title: str = "Response Volume Over T
     )
     fig.update_layout(
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         xaxis_title="Date",
         yaxis_title="Response Count",
         margin=dict(l=20, r=20, t=50, b=30),
+        xaxis=dict(gridcolor=CHART_GRID_COLOR),
+        yaxis=dict(gridcolor=CHART_GRID_COLOR),
     )
     return fig
 
@@ -267,9 +287,15 @@ def plot_horizontal_bar_with_denominators(
         title=f"<b>{title}</b>",
         template=DEFAULT_CHART_TEMPLATE,
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         xaxis_title="Share of Answered Respondents (%)",
         yaxis_title="",
-        xaxis=dict(range=[0, max(max_pct * 1.18, 5)]),
+        xaxis=dict(
+            range=[0, max(max_pct * 1.18, 5)],
+            gridcolor=CHART_GRID_COLOR,
+        ),
+        yaxis=dict(gridcolor=CHART_GRID_COLOR),
         margin=dict(l=20, r=20, t=50, b=30),
         height=height or max(350, len(plot_df) * 28),
     )
@@ -305,28 +331,28 @@ def plot_technology_comparison_bar(
 
     fig = go.Figure()
 
-    # Current Worked With
+    # Current Worked With - Primary Accent Blue (#3B82F6)
     fig.add_trace(
         go.Bar(
             y=plot_df[tech_col],
             x=plot_df[current_col],
             name="Currently Worked With",
             orientation="h",
-            marker=dict(color="#1f77b4"),
+            marker=dict(color="#3B82F6"),
             text=plot_df[current_col].apply(lambda v: f"{v:.1f}%"),
             textposition="auto",
             hovertemplate="<b>%{y}</b><br>Currently Used: %{x:.1f}%<extra></extra>",
         )
     )
 
-    # Desired
+    # Desired - Positive Indicator Green (#22C55E)
     fig.add_trace(
         go.Bar(
             y=plot_df[tech_col],
             x=plot_df[desired_col],
             name="Want to Work With",
             orientation="h",
-            marker=dict(color="#2ca02c"),
+            marker=dict(color="#22C55E"),
             text=plot_df[desired_col].apply(lambda v: f"{v:.1f}%"),
             textposition="auto",
             hovertemplate="<b>%{y}</b><br>Want to Work With: %{x:.1f}%<extra></extra>",
@@ -338,9 +364,13 @@ def plot_technology_comparison_bar(
         barmode="group",
         template=DEFAULT_CHART_TEMPLATE,
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         xaxis_title="Proportion of Respondents (%)",
         yaxis_title="",
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1),
+        xaxis=dict(gridcolor=CHART_GRID_COLOR),
+        yaxis=dict(gridcolor=CHART_GRID_COLOR),
         margin=dict(l=20, r=20, t=60, b=30),
         height=max(400, len(plot_df) * 35),
     )
@@ -406,11 +436,18 @@ def plot_compensation_box(
         title=f"<b>{title}</b>",
         template=DEFAULT_CHART_TEMPLATE,
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         yaxis_title="Annual Compensation (USD)",
         xaxis_title="",
         showlegend=False,
         margin=dict(l=20, r=20, t=50, b=40),
-        yaxis=dict(tickprefix="$", tickformat=",.0f"),
+        yaxis=dict(
+            tickprefix="$",
+            tickformat=",.0f",
+            gridcolor=CHART_GRID_COLOR,
+        ),
+        xaxis=dict(gridcolor=CHART_GRID_COLOR),
     )
     return fig
 
@@ -446,7 +483,7 @@ def plot_missingness_ranking_bar(
             marker=dict(
                 color=plot_df["missing_pct"],
                 colorscale="Reds",
-                line=dict(color="rgba(0,0,0,0.15)", width=1),
+                line=dict(color="rgba(255,255,255,0.15)", width=1),
             ),
             customdata=plot_df[["missing_count", "non_null_count"]].values,
             hovertemplate=(
@@ -463,9 +500,15 @@ def plot_missingness_ranking_bar(
         title=f"<b>{title}</b>",
         template=DEFAULT_CHART_TEMPLATE,
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         xaxis_title="Non-Response / Missingness Rate (%)",
         yaxis_title="",
-        xaxis=dict(range=[0, 105]),
+        xaxis=dict(
+            range=[0, 105],
+            gridcolor=CHART_GRID_COLOR,
+        ),
+        yaxis=dict(gridcolor=CHART_GRID_COLOR),
         margin=dict(l=20, r=20, t=50, b=30),
         height=max(400, len(plot_df) * 26),
     )
@@ -496,10 +539,10 @@ def plot_sample_flow_funnel(
             x=stage_counts,
             textinfo="value+percent initial",
             marker=dict(
-                color=["#2b5c8f", "#3b7cb9", "#569bd8", "#7ebbf5"][: len(stage_names)],
-                line=dict(width=1, color="white"),
+                color=["#1E3A8A", "#2563EB", "#3B82F6", "#60A5FA"][: len(stage_names)],
+                line=dict(width=1, color="rgba(255,255,255,0.2)"),
             ),
-            connector=dict(line=dict(color="gray", width=1, dash="dot")),
+            connector=dict(line=dict(color="#64748B", width=1, dash="dot")),
         )
     )
 
@@ -507,6 +550,8 @@ def plot_sample_flow_funnel(
         title=f"<b>{title}</b>",
         template=DEFAULT_CHART_TEMPLATE,
         font=dict(family=CHART_FONT_FAMILY),
+        paper_bgcolor=CHART_BG_TRANSPARENT,
+        plot_bgcolor=CHART_BG_TRANSPARENT,
         margin=dict(l=20, r=20, t=50, b=30),
         height=360,
     )

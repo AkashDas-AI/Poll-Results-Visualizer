@@ -22,6 +22,7 @@ from app.data_provider import (  # noqa: E402
     get_survey_dataset,
     METRICS_JSON_PATH,
 )
+from app.components.theme import apply_custom_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_missingness_ranking_bar,
     plot_sample_flow_funnel,
@@ -36,6 +37,7 @@ st.set_page_config(
 
 
 def main():
+    apply_custom_theme()
     st.title("🛡️ Data Quality, Missingness & Governance")
     st.caption("Missingness rankings, sample flow accounting, experience moments audit, and governance.")
 

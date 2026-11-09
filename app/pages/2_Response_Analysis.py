@@ -19,6 +19,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from app.data_provider import get_survey_dataset  # noqa: E402
 from app.components.filters import render_survey_demographic_filters  # noqa: E402
+from app.components.theme import apply_custom_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_horizontal_bar_with_denominators,
     plot_technology_comparison_bar,
@@ -36,6 +37,7 @@ st.set_page_config(
 
 
 def main():
+    apply_custom_theme()
     st.title("💻 Technology & AI Adoption Deep Dive")
     st.caption("Granular multi-select technology breakdowns, migration patterns, and autonomous agent adoption.")
 
