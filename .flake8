@@ -1,0 +1,11 @@
+[flake8]
+max-line-length = 120
+exclude =
+    .venv,
+    __pycache__,
+    .pytest_cache,
+    outputs,
+    notebooks
+per-file-ignores =
+    app/*: E402
+    app/pages/*: E402

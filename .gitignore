@@ -1,0 +1,80 @@
+# Virtual Environment
+.venv/
+env/
+venv/
+ENV/
+
+# Local Caches
+.cache/
+
+# Python cache & artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Environment & credentials
+.env
+.env.*
+!.env.example
+.env.local
+*.key
+*.secret
+
+# IDEs & editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project output directories (ignore generated artifacts, keep structure)
+outputs/charts/*
+!outputs/charts/.gitkeep
+outputs/exports/*
+!outputs/exports/.gitkeep
+outputs/logs/*
+!outputs/logs/.gitkeep
+
+# Sensitive or large data (keep sample data)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Scratch & temporary development scripts
+scratch/
+
+# Private Interview and Portfolio Preparation Files (Local Study Only)
+docs/INTERVIEW_PREPARATION.md
+docs/PORTFOLIO_PRESENTATION_GUIDE.md
+docs/*INTERVIEW*
+docs/*PORTFOLIO*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+*.bak
+*.tmp
