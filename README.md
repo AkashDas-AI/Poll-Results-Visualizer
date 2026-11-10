@@ -108,27 +108,43 @@ The application provides an interactive web dashboard divided into four dedicate
 
 <!-- Screenshot 1: Executive Dashboard Landing Page -->
 ![Dashboard Overview](images/dashboard_overview.png)
-*Figure 1: Executive Dashboard Landing Page showing global survey telemetry and high-level KPIs.*
+*Figure 1: Executive Dashboard Landing Page showing global survey telemetry and high-level KPIs in Dark Mode.*
 
-<!-- Screenshot 2: Programming Language Adoption and Stated Preference Gaps -->
+<!-- Screenshot 2: Overview Demographics & Sample Funnel -->
+![Overview Demographics](images/page1_overview_demographics.png)
+*Figure 2: Overview page featuring demographic distributions, formal education profiles, and cohort slicing controls.*
+
+<!-- Screenshot 3: Programming Language Adoption and Stated Preference Gaps -->
 ![Response Analysis](images/response_analysis.png)
-*Figure 2: Response Analysis page featuring dual-denominator technology adoption and paired current-versus-desired preference gaps.*
+*Figure 3: Response Analysis page featuring dual-denominator technology adoption and paired current-versus-desired preference gaps.*
 
-<!-- Screenshot 3: Segment Comparison and Remote Work Dynamics -->
+<!-- Screenshot 4: Segment Comparison and Remote Work Dynamics -->
 ![Segment Comparison](images/segment_comparison.png)
-*Figure 3: Segment Comparison page displaying cross-cohort salary distributions, quadratic experience gradients, and remote wage attenuation.*
+*Figure 4: Segment Comparison page displaying cross-cohort salary distributions, quartile statistics, and remote wage attenuation.*
 
-<!-- Screenshot 4: Data Quality and Nonresponse Mechanism Audit -->
+<!-- Screenshot 5: Data Quality and Nonresponse Mechanism Audit -->
 ![Data Quality](images/data_quality.png)
-*Figure 4: Data Quality page illustrating survey missingness rankings and the RemoteWork nonresponse audit.*
+*Figure 5: Data Quality page illustrating survey missingness rankings and the audited RemoteWork nonresponse contingency table.*
+
+<!-- Screenshot 6: Dual-Theme Enterprise Dark vs Light Mode Comparison -->
+![Theme Comparison](images/theme_comparison.png)
+*Figure 6: Dual-Theme Comparison showcase demonstrating responsive Plotly transparent canvas adaptability between Enterprise Dark Theme (left) and Accessibility Light Theme (right).*
 
 ### Recommended Screenshots for Repository Maintainers
 
 When capturing and adding screenshots to the `images/` folder, maintain the following naming conventions:
 1. `images/dashboard_overview.png`: Full-width browser capture of the Executive Home landing portal.
-2. `images/response_analysis.png`: Capture of Page 2 showing the dual-denominator language bar chart and preference gap table.
-3. `images/segment_comparison.png`: Capture of Page 3 showing the boxplot distributions and Model C remote work comparison.
-4. `images/data_quality.png`: Capture of Page 4 showing the missingness ranking chart and contingency table audit.
+2. `images/page1_overview_demographics.png`: Capture of Page 1 showing the sample flow funnel, question completeness inventory, and natural demographic distributions.
+3. `images/response_analysis.png`: Capture of Page 2 showing the dual-denominator language bar chart and preference gap table.
+4. `images/segment_comparison.png`: Capture of Page 3 showing the boxplot distributions and Model C remote work comparison.
+5. `images/data_quality.png`: Capture of Page 4 showing the missingness ranking chart and contingency table audit.
+6. `images/theme_comparison.png`: Side-by-side Dark Theme vs Light Theme comparison demonstrating transparent chart canvas adaptability.
+
+To regenerate all screenshots deterministically at Full HD 1920x1080 resolution, maintainers can run:
+```bash
+python tools/capture_screenshots.py
+```
+For detailed capture protocols, asset budgets (< 400 KB), and visual guidelines, refer to the [Screenshot Guide](docs/SCREENSHOT_GUIDE.md).
 
 ---
 
