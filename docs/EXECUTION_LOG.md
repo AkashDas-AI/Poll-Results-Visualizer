@@ -1409,3 +1409,31 @@ Following Project Lead review of initial Phase 7 deliverables, material numerica
 - **Analytical Invariance:** SHA-256 hash of `data/processed/survey_results_cleaned.parquet` verified identical (`16f5ce8e8f387405fa9635e44074dc468f44b82c0ee23287b2889be238fbbe52`). All statistical outputs, models, and findings remain untouched.
 - **Git Commit & Remote Push:** Committed under `feat: add professional dark theme to Streamlit dashboard` and pushed to `origin main` at `https://github.com/AkashDas-AI/Poll-Results-Visualizer.git`.
 
+---
+
+## [2026-11-10] - Documentation: Testing Guide and Screenshot Guide Authoring
+
+**Authority:** Developer Documentation Enhancement Request.  
+**Author:** Akash Das  
+**Milestone:** Post-Phase 8 Documentation Polish - Quality Assurance & Visual Assets  
+**Status:** Complete. Committed & Pushed to Remote.  
+**Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`  
+
+### 1. Scope and Objectives
+- Produce two dedicated, enterprise-grade technical documentations in `docs/`:
+  1. `docs/TESTING_GUIDE.md`: Comprehensive Quality Assurance guide documenting testing philosophy, hermetic pure-Python execution, CI/CD decoupling via `@require_parquet`, complete module-by-module inventory of all 10 test files and 93 test cases, closed-form mathematical benchmark proofs, execution commands, flake8 linting, and troubleshooting.
+  2. `docs/SCREENSHOT_GUIDE.md`: Visual asset documentation establishing viewport standards (1920x1080 16:9), color hierarchy (Enterprise BI dark palette vs light mode accessibility), capture specifications for all 5 core dashboard views plus theme comparison, automated headless capture via Playwright, lossless optimization (< 400 KB), and markdown embedding conventions.
+
+### 2. Files Created and Modified
+- **Created:**
+  - `docs/TESTING_GUIDE.md`: Comprehensive test architecture, suite breakdown (93 tests), and execution guide.
+  - `docs/SCREENSHOT_GUIDE.md`: Official screenshot capture protocols, specifications, and automated scripts.
+- **Modified:**
+  - `docs/EXECUTION_LOG.md`: Appended documentation ledger entry.
+
+### 3. Verification and Quality Gates
+- **Pytest Suite:** 93 passed out of 93 tests (100% pass rate).
+- **Flake8 Linting:** 0 errors / 0 warnings across all code.
+- **Git Commits & Remote Push:** Committed and pushed to `origin main` at `https://github.com/AkashDas-AI/Poll-Results-Visualizer.git`.
+
+
