@@ -30,7 +30,7 @@ jobs:
 
       - name: Run linting
         run: |
-          flake8 app src tests
+          flake8 app src tests tools
 
       - name: Run tests with pytest
         run: |

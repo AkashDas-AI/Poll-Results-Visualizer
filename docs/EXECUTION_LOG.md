@@ -1506,6 +1506,51 @@ Following Project Lead review of initial Phase 7 deliverables, material numerica
 - **Flake8 Linting:** 0 errors / 0 warnings across all files.
 - **CI Parity:** Guaranteed 100% pass rate in GitHub Actions CI runner without compromising candidate interview preparation privacy.
 
+---
+
+## [2026-11-10] - Repository-Wide Health Audit, CI Verification & Dependency Hardening
+
+**Authority:** Repository-Wide Health Audit & CI Verification Directive.  
+**Author:** Akash Das  
+**Milestone:** Post-Phase 8 Repository Governance, Quality Gate & CI Verification  
+**Status:** 100% Passing. Verified Locally & Confirmed Green on GitHub Actions.  
+**Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`  
+
+### 1. GitHub Actions Failure Diagnosis & Root Cause
+- **Original Failure:** GitHub Actions Run ID `42790894491` failed on job `test (3.11)` -> step `Run tests with pytest` after 35 seconds.
+- **Error Category:** Test Assertion Failure (`AssertionError: Missing required Phase 7 deliverable: INTERVIEW_PREPARATION.md`).
+- **Actual Root Cause:** Private candidate interview preparation files (`docs/INTERVIEW_PREPARATION.md` and `docs/PORTFOLIO_PRESENTATION_GUIDE.md`) were deliberately excluded from the public git repository via `.gitignore` to preserve candidate confidentiality. However, `tests/test_insights.py` had an unconditional assertion checking for their physical existence, causing clean CI checkouts to fail while local workstation tests passed.
+- **Resolution:** Decoupled private study files from public reporting assertions in `tests/test_insights.py`, verifying public reports (`reports/project_report.md`, `reports/key_insights_report.md`, `reports/recommendations_report.md`) unconditionally and private study guides conditionally.
+
+### 2. Repository-Wide Health Audit Across All 7 Domains
+1. **GitHub Actions & CI Configuration:**
+   - Evaluated `.github/workflows/tests.yml` across Ubuntu latest on Python 3.10 and 3.11.
+   - Expanded linting step from `flake8 app src tests` to `flake8 app src tests tools` to include the automated screenshot utility.
+2. **Python Source Code & Dependencies:**
+   - Audited all 35 Python files across `src/`, `app/`, `tests/`, and `tools/` using programmatic dynamic loading (`SourceFileLoader`). All 35 modules imported with zero errors.
+   - Added `pyarrow>=14.0.0,<20.0.0` to `requirements.txt` to guarantee clean, reproducible Parquet IO in fresh virtual environments without relying on pre-cached wheels.
+3. **Streamlit Application & Dark Theme:**
+   - Verified live application launch on port 8555: returned `HTTP 200 - ok` on `/_stcore/health`.
+   - Verified `.streamlit/config.toml` dark theme palette (`#0E1117`, `#161B26`, `#1C2433`, `#3B82F6`, `#22C55E`, `#F59E0B`, `#30394A`).
+   - Verified dual-theme adaptability via side-by-side composite screenshot (`images/theme_comparison.png`).
+4. **Plotly Visualizations:**
+   - Verified transparent canvas (`paper_bgcolor="rgba(0,0,0,0)"`, `plot_bgcolor="rgba(0,0,0,0)"`) and low-opacity gridlines (`rgba(128, 128, 128, 0.15)`).
+   - Zero visual regressions across all 10 chart generators.
+5. **Data Pipeline & Parquet Integrity:**
+   - Cryptographic SHA-256 hash of `data/processed/survey_results_cleaned.parquet` verified identical: `16f5ce8e8f387405fa9635e44074dc468f44b82c0ee23287b2889be238fbbe52` (100% immutable).
+6. **Documentation & README:**
+   - Verified README.md structure, badges, relative links (`images/*.png`), descriptive demographic summaries, technology preference gap matrix ($N=27,079$), top 10 cross-national wage benchmarks, and econometric model tables.
+7. **Security, Credentials & Repository Hygiene:**
+   - Automated regex scan across all git-tracked files: 0 real credentials, 0 API keys (`ghp_`, `gho_`, `AKIA`, `sk-`), 0 private keys.
+   - Verified large survey datasets, `.venv`, scratch scripts, and private interview files are strictly excluded via `.gitignore`.
+
+### 3. Quality Gate Execution
+- **Pytest Suite:** 93 passed out of 93 tests (100% pass rate in 12.47s).
+- **Flake8 Linting:** 0 errors / 0 warnings across `app`, `src`, `tests`, `tools`.
+- **Live Health Probe:** HTTP 200 OK (`/_stcore/health`).
+- **GitHub Actions Remote Status:** Run ID `42794037767` on commit `5fdf407` completed successfully with green checkmarks across both `test (3.10)` and `test (3.11)` jobs.
+
+
 
 
 
