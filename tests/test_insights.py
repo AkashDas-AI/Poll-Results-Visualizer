@@ -52,18 +52,28 @@ def test_phase7_reporting_deliverables_integrity():
     from pathlib import Path
     root = Path(__file__).resolve().parent.parent
 
-    report_files = [
+    # Public reporting deliverables tracked in repository
+    public_reports = [
         root / "reports" / "project_report.md",
         root / "reports" / "key_insights_report.md",
         root / "reports" / "recommendations_report.md",
-        root / "docs" / "INTERVIEW_PREPARATION.md",
-        root / "docs" / "PORTFOLIO_PRESENTATION_GUIDE.md",
     ]
 
-    for rf in report_files:
+    for rf in public_reports:
         assert rf.exists(), f"Missing required Phase 7 deliverable: {rf.name}"
         content = rf.read_text(encoding="utf-8")
         assert len(content) > 1000, f"File {rf.name} is unexpectedly short"
+
+    # Conditionally verify local private interview/portfolio guides if present on disk
+    # (Excluded from git repository to preserve candidate interview confidentiality)
+    private_guides = [
+        root / "docs" / "INTERVIEW_PREPARATION.md",
+        root / "docs" / "PORTFOLIO_PRESENTATION_GUIDE.md",
+    ]
+    for pf in private_guides:
+        if pf.exists():
+            content = pf.read_text(encoding="utf-8")
+            assert len(content) > 1000, f"File {pf.name} is unexpectedly short"
 
     # Verify approved RemoteWork missingness statement in project_report.md
     proj_report = (root / "reports" / "project_report.md").read_text(encoding="utf-8")
