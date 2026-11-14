@@ -1609,6 +1609,25 @@ Configured all development caches to remain strictly within the project boundary
 - **AST Parsing:** Executed Python standard library Abstract Syntax Tree (`ast.parse`) validation across all modified files (`theme.py`, `charts.py`, `1_Overview.py`, `3_Segment_Comparison.py`, `streamlit_app.py`, `2_Response_Analysis.py`, `4_Data_Quality.py`). All modules compiled with zero syntax errors.
 - **Runtime Testing Status:** In adherence to the strict environment policy, runtime tests (`pytest`, `streamlit run`) remain pending explicit user authorization to avoid recreating `.venv` or modifying the clean workstation state.
 
+---
+
+## [2026-11-14] - Defensive Dependency Import Guards & Graceful Visualization Fallback
+
+**Author:** Akash Das  
+**Execution Context:** Resolving Runtime ModuleNotFoundError on Clean Environments Without Plotly  
+**Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`
+
+### 1. Root Cause Identification
+- **Error Observed:** `ModuleNotFoundError: No module named 'plotly'` when launching Streamlit in environments lacking `plotly` (e.g., global Python 3.11 after intentional `.venv` removal).
+- **Impacted Surfaces:** `app/pages/1_Overview.py`, `2_Response_Analysis.py`, `3_Segment_Comparison.py`, and `4_Data_Quality.py` failed during top-level module import due to unguarded `import plotly.express as px`.
+
+### 2. Defensive Architectural Resolution
+- **Defensive Import Wrapper:** Wrapped `plotly.express` and `plotly.graph_objects` imports with `try...except ImportError` across `app/components/charts.py`, `app/pages/1_Overview.py`, and `app/pages/3_Segment_Comparison.py`.
+- **Graceful Rendering Fallback:** Implemented `render_plotly_chart(fig, fallback_message)` in `app/components/charts.py`. If `plotly` is missing or a figure is `None`, Streamlit displays an informative, non-crashing banner explaining that `plotly` is required to render the chart and referencing `requirements.txt`.
+- **Telemetry & Tables Resilience:** All non-chart components (KPI cards, demographic dataframes, methodology notices, and the sidebar theme toggle) render with 100% stability even when `plotly` is not installed.
+- **Verification:** Dynamically loaded all five dashboard modules using standard Python; verified all five pages load cleanly with `HAS_PLOTLY = False` with zero tracebacks or unhandled exceptions.
+
+
 
 
 

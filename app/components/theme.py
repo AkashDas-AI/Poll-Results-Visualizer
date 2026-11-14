@@ -381,23 +381,28 @@ def apply_chart_theme(fig: Any, theme: Optional[str] = None) -> Any:
     Returns:
         The styled Plotly Figure.
     """
+    if fig is None:
+        return None
     cfg = get_theme_config(theme)
-    fig.update_layout(
-        template=cfg["plotly_template"],
-        font=dict(color=cfg["text_primary"]),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(0,0,0,0)",
-    )
-    fig.update_xaxes(
-        gridcolor=cfg["chart_grid"],
-        zerolinecolor=cfg["chart_grid"],
-        tickfont=dict(color=cfg["text_secondary"]),
-        title_font=dict(color=cfg["text_primary"]),
-    )
-    fig.update_yaxes(
-        gridcolor=cfg["chart_grid"],
-        zerolinecolor=cfg["chart_grid"],
-        tickfont=dict(color=cfg["text_secondary"]),
-        title_font=dict(color=cfg["text_primary"]),
-    )
+    try:
+        fig.update_layout(
+            template=cfg["plotly_template"],
+            font=dict(color=cfg["text_primary"]),
+            paper_bgcolor="rgba(0,0,0,0)",
+            plot_bgcolor="rgba(0,0,0,0)",
+        )
+        fig.update_xaxes(
+            gridcolor=cfg["chart_grid"],
+            zerolinecolor=cfg["chart_grid"],
+            tickfont=dict(color=cfg["text_secondary"]),
+            title_font=dict(color=cfg["text_primary"]),
+        )
+        fig.update_yaxes(
+            gridcolor=cfg["chart_grid"],
+            zerolinecolor=cfg["chart_grid"],
+            tickfont=dict(color=cfg["text_secondary"]),
+            title_font=dict(color=cfg["text_primary"]),
+        )
+    except Exception:
+        pass
     return fig

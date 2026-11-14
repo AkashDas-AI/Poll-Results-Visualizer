@@ -9,9 +9,16 @@ Phase: Phase 6 — Visualization
 import sys
 from pathlib import Path
 import pandas as pd
-import plotly.express as px
-import plotly.graph_objects as go
 import streamlit as st
+
+try:
+    import plotly.express as px
+    import plotly.graph_objects as go
+    HAS_PLOTLY = True
+except ImportError:
+    px = None
+    go = None
+    HAS_PLOTLY = False
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -23,6 +30,7 @@ from app.components.filters import render_survey_demographic_filters  # noqa: E4
 from app.components.theme import apply_custom_theme, apply_chart_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_horizontal_bar_with_denominators,
+    render_plotly_chart,
     CHART_FONT_FAMILY,
     DEFAULT_CHART_TEMPLATE,
 )
@@ -104,23 +112,26 @@ def main():
             })
             age_df["Percentage"] = (age_df["Count"] / n_age_ans) * 100.0
 
-            fig_age = px.bar(
-                age_df,
-                x="Age Bracket",
-                y="Percentage",
-                text=age_df["Percentage"].apply(lambda v: f"{v:.1f}%"),
-                title="<b>Respondent Age Cohort Distribution</b>",
-                color="Percentage",
-                color_continuous_scale="Blues",
-            )
-            fig_age.update_layout(
-                showlegend=False,
-                yaxis_title="Share of Answered Respondents (%)",
-                xaxis_title="",
-                margin=dict(l=20, r=20, t=50, b=30),
-            )
-            apply_chart_theme(fig_age)
-            st.plotly_chart(fig_age, use_container_width=True)
+            if HAS_PLOTLY:
+                fig_age = px.bar(
+                    age_df,
+                    x="Age Bracket",
+                    y="Percentage",
+                    text=age_df["Percentage"].apply(lambda v: f"{v:.1f}%"),
+                    title="<b>Respondent Age Cohort Distribution</b>",
+                    color="Percentage",
+                    color_continuous_scale="Blues",
+                )
+                fig_age.update_layout(
+                    showlegend=False,
+                    yaxis_title="Share of Answered Respondents (%)",
+                    xaxis_title="",
+                    margin=dict(l=20, r=20, t=50, b=30),
+                )
+                apply_chart_theme(fig_age)
+                render_plotly_chart(fig_age)
+            else:
+                render_plotly_chart(None, "Respondent Age Cohort Distribution requires the 'plotly' package.")
             modal_idx = age_df["Count"].idxmax()
             modal_row = age_df.loc[modal_idx]
             modal_cohort = modal_row["Age Bracket"]
@@ -168,7 +179,7 @@ def main():
                 top_n=8,
                 color_scale="Blues",
             )
-            st.plotly_chart(fig_ed, use_container_width=True)
+            render_plotly_chart(fig_ed)
             st.caption(
                 f"Question Answered: N_answered = {n_ed_ans:,} | "
                 "Hover reveals exact counts, % of answered, and % of total survey pool."
@@ -185,31 +196,34 @@ def main():
         we_series = filtered_df["WorkExp_num"].dropna()
 
         if not yc_series.empty and not we_series.empty:
-            fig_exp = go.Figure()
-            fig_exp.add_trace(
-                go.Box(
-                    x=yc_series,
-                    name="Years Coding (YearsCode_num)",
-                    marker_color="#3B82F6",
-                    boxpoints=False,
+            if HAS_PLOTLY:
+                fig_exp = go.Figure()
+                fig_exp.add_trace(
+                    go.Box(
+                        x=yc_series,
+                        name="Years Coding (YearsCode_num)",
+                        marker_color="#3B82F6",
+                        boxpoints=False,
+                    )
                 )
-            )
-            fig_exp.add_trace(
-                go.Box(
-                    x=we_series,
-                    name="Professional Work Exp (WorkExp_num)",
-                    marker_color="#22C55E",
-                    boxpoints=False,
+                fig_exp.add_trace(
+                    go.Box(
+                        x=we_series,
+                        name="Professional Work Exp (WorkExp_num)",
+                        marker_color="#22C55E",
+                        boxpoints=False,
+                    )
                 )
-            )
-            fig_exp.update_layout(
-                title="<b>Experience Distributions: Total Coding vs. Professional Work Experience</b>",
-                xaxis_title="Years of Experience",
-                margin=dict(l=20, r=20, t=50, b=30),
-                height=260,
-            )
-            apply_chart_theme(fig_exp)
-            st.plotly_chart(fig_exp, use_container_width=True)
+                fig_exp.update_layout(
+                    title="<b>Experience Distributions: Total Coding vs. Professional Work Experience</b>",
+                    xaxis_title="Years of Experience",
+                    margin=dict(l=20, r=20, t=50, b=30),
+                    height=260,
+                )
+                apply_chart_theme(fig_exp)
+                render_plotly_chart(fig_exp)
+            else:
+                render_plotly_chart(None, "Coding vs. Work Experience boxplot requires the 'plotly' package.")
         else:
             st.info("Insufficient experience data for box plot.")
 
@@ -266,7 +280,7 @@ def main():
                     top_n=8,
                     color_scale="Blues",
                 )
-                st.plotly_chart(fig_emp, use_container_width=True)
+                render_plotly_chart(fig_emp)
                 st.caption(
                     f"Multi-select question: Respondents may select multiple statuses. "
                     f"N_answered = {n_emp_ans:,} respondents."
@@ -291,7 +305,7 @@ def main():
                     title="Working Arrangement Breakdown",
                     color_scale="Teal",
                 )
-                st.plotly_chart(fig_rw, use_container_width=True)
+                render_plotly_chart(fig_rw)
                 st.caption(
                     f"N_answered = {n_rw_ans:,} | Non-response: {n_total - n_rw_ans:,} respondents omitted. "
                     "RemoteWork nonresponse is associated with respondent branch. "
@@ -322,7 +336,7 @@ def main():
                 color_scale="Blues",
                 height=450,
             )
-            st.plotly_chart(fig_country, use_container_width=True)
+            render_plotly_chart(fig_country)
 
             with st.expander("📋 View Complete Country Distribution Table"):
                 c_counts["Pct_Answered"] = (c_counts["Count"] / n_c_ans * 100.0).round(2)

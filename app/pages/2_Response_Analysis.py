@@ -23,6 +23,7 @@ from app.components.theme import apply_custom_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_horizontal_bar_with_denominators,
     plot_technology_comparison_bar,
+    render_plotly_chart,
 )
 from src.datasets.stackoverflow_2025 import (  # noqa: E402
     analyze_single_select,
@@ -77,7 +78,7 @@ def main():
                 color_scale="Blues",
                 height=520,
             )
-            st.plotly_chart(fig_lang, use_container_width=True)
+            render_plotly_chart(fig_lang)
             st.caption(
                 f"Question Answered: N_answered = {n_lang_ans:,} respondents "
                 f"({n_lang_ans / n_total * 100.0:.1f}% of survey pool). "
@@ -130,7 +131,7 @@ def main():
                         title=f"Top 15 Languages: Current vs. Desired Adoption (N_paired = {n_paired:,})",
                         top_n=15,
                     )
-                    st.plotly_chart(fig_comp, use_container_width=True)
+                    render_plotly_chart(fig_comp)
 
                 with col_comp_table:
                     st.markdown("#### Migration & Desire Momentum")
@@ -181,7 +182,7 @@ def main():
                     color_scale="Blues",
                     height=450,
                 )
-                st.plotly_chart(fig_db, use_container_width=True)
+                render_plotly_chart(fig_db)
                 st.caption(
                     f"Question Answered: N_answered = {n_db_ans:,} respondents. "
                     "Dominant database engines: PostgreSQL (56.86%), MySQL (41.41%), and SQLite (38.35%)."
@@ -205,7 +206,7 @@ def main():
                     color_scale="Teal",
                     height=450,
                 )
-                st.plotly_chart(fig_plat, use_container_width=True)
+                render_plotly_chart(fig_plat)
                 st.caption(
                     f"Question Answered: N_answered = {n_plat_ans:,} respondents. "
                     "Leading infrastructure platforms: Docker (71.79%), AWS (43.77%), "
@@ -242,7 +243,7 @@ def main():
                     title="AI Tool Usage Frequency (AISelect)",
                     color_scale="Blues",
                 )
-                st.plotly_chart(fig_ai_sel, use_container_width=True)
+                render_plotly_chart(fig_ai_sel)
                 st.caption(
                     f"N_answered = {n_ai_ans:,} | "
                     f"Daily and weekly users account for the majority of respondents adopting AI tools."
@@ -262,7 +263,7 @@ def main():
                     title="Perceived Accuracy of AI Tools (AIAcc)",
                     color_scale="Teal",
                 )
-                st.plotly_chart(fig_acc, use_container_width=True)
+                render_plotly_chart(fig_acc)
                 st.caption(
                     f"N_answered = {n_acc_ans:,} | "
                     "Note: Only ~3% 'Highly trust' AI output, while 'Distrust' (Somewhat + Highly) exceeds 45%."
@@ -282,7 +283,7 @@ def main():
                     title="General Sentiment Towards AI Tools (AISent)",
                     color_scale="Blues",
                 )
-                st.plotly_chart(fig_sent, use_container_width=True)
+                render_plotly_chart(fig_sent)
                 st.caption(f"N_answered = {n_sent_ans:,} | Majority of developers view AI tooling favorably.")
 
     with ai_tab4:
@@ -299,7 +300,7 @@ def main():
                     title="Autonomous AI Agent Adoption Hierarchy (AIAgents)",
                     color_scale="Teal",
                 )
-                st.plotly_chart(fig_agents, use_container_width=True)
+                render_plotly_chart(fig_agents)
                 st.caption(
                     f"N_answered = {n_agents_ans:,} | "
                     "The 6-tier hierarchy illustrates that while copilot/autocomplete mode is widespread, "

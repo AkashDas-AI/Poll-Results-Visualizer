@@ -26,6 +26,7 @@ from app.components.theme import apply_custom_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_missingness_ranking_bar,
     plot_sample_flow_funnel,
+    render_plotly_chart,
 )
 from src.export import get_csv_download_bytes  # noqa: E402
 
@@ -87,7 +88,7 @@ def main():
             title="Top 20 Questions by Non-Response / Missingness Rate",
             top_n=20,
         )
-        st.plotly_chart(fig_miss, use_container_width=True)
+        render_plotly_chart(fig_miss)
 
     with col_miss_branch:
         st.markdown("#### Nonresponse Association in `RemoteWork`")
@@ -145,7 +146,7 @@ def main():
 
     with col_funnel:
         fig_funnel = plot_sample_flow_funnel(stage_names, stage_counts, title="Compensation Analytical Sample Flow")
-        st.plotly_chart(fig_funnel, use_container_width=True)
+        render_plotly_chart(fig_funnel)
 
     with col_flow_memo:
         st.markdown("#### Sample Flow Ledger")
