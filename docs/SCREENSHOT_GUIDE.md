@@ -58,9 +58,10 @@ The dashboard defaults to an enterprise Business Intelligence dark palette engin
 | **Borders & Dividers** | `#30394A` | Card outlines, table borders, horizontal dividers |
 
 ### 2.2. Dual-Theme Adaptability (Light Mode Alternative)
-While Dark Mode is the flagship recruiter-facing theme, the application fully supports Streamlit's native Light Mode:
-- All Plotly charts utilize transparent backgrounds (`paper_bgcolor="rgba(0,0,0,0)"`, `plot_bgcolor="rgba(0,0,0,0)"`).
-- Plotly gridlines use low-opacity gray (`rgba(128, 128, 128, 0.15)`), which renders subtly against both `#0E1117` dark and `#FFFFFF` light canvases.
+While Dark Mode is the flagship recruiter-facing theme, the application features an enterprise Light Mode managed via `app/components/theme.py`:
+- **Interactive Toggle:** Rendered in the sidebar via `st.sidebar.radio` (`theme_mode_selector`), storing title-case strings `"Dark"` and `"Light"` in `st.session_state["theme_mode"]` with persistence across page navigation.
+- **Enterprise Light Palette:** Main background `#F8FAFC`, sidebar `#F1F5F9`, card surface `#FFFFFF`, primary typography `#0F172A` (Slate-900), and borders `#CBD5E1`.
+- **Plotly Dual-Theming:** All 10 shared chart generators and 4 page-level figures route through `apply_chart_theme`, dynamically toggling between `plotly_dark` and `plotly_white` templates with adapted gridlines (`rgba(0, 0, 0, 0.08)`), tooltips, and transparent backgrounds (`chart_paper` and `chart_bg` as `"rgba(0, 0, 0, 0)"`).
 
 ---
 
