@@ -9,6 +9,7 @@ Phase: Phase 3 — Theme Architecture Hardening
 """
 
 import pytest
+from unittest.mock import MagicMock, patch
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.io as pio
@@ -21,6 +22,8 @@ from app.components.theme import (
     get_theme_config,
     set_theme,
     _on_theme_toggle_change,
+    render_theme_toggle,
+    apply_custom_theme,
     apply_chart_theme,
     CUSTOM_THEME_CSS_DARK,
     CUSTOM_THEME_CSS_LIGHT,
@@ -49,6 +52,16 @@ REQUIRED_PALETTE_KEYS = {
     "hover_border",
     "font_family",
 }
+
+
+@pytest.fixture(autouse=True)
+def clean_session_state():
+    """Ensure clean session state for each test run."""
+    if hasattr(st, "session_state"):
+        st.session_state.clear()
+    yield
+    if hasattr(st, "session_state"):
+        st.session_state.clear()
 
 
 # -----------------------------------------------------------------------------
@@ -151,6 +164,130 @@ def test_on_theme_toggle_change_callback():
         st.session_state["theme_mode_selector"] = "🌙 Dark"
         _on_theme_toggle_change()
         assert st.session_state["theme_mode"] == "Dark"
+
+
+# -----------------------------------------------------------------------------
+# 3. User-Facing Toggle Interaction & Lifecycle Tests (Phase 4)
+# -----------------------------------------------------------------------------
+
+def test_fresh_session_dark_default():
+    """Scenario A: Verify fresh session defaults to Dark mode and initializes selector properly."""
+    with patch.object(st, "sidebar", MagicMock()) as mock_sidebar, patch.object(st, "markdown", MagicMock()):
+        theme = render_theme_toggle(location="sidebar")
+        assert theme == "Dark"
+        assert st.session_state["theme_mode"] == "Dark"
+        assert st.session_state["theme_mode_selector"] == "🌙 Dark"
+        mock_sidebar.radio.assert_called_once()
+        _, kwargs = mock_sidebar.radio.call_args
+        assert kwargs["key"] == "theme_mode_selector"
+        assert kwargs["options"] == ["🌙 Dark", "☀️ Light"]
+
+
+def test_toggle_switch_to_light():
+    """Scenario B: Simulate user selecting Light in sidebar radio toggle."""
+    with patch.object(st, "sidebar", MagicMock()), patch.object(st, "markdown", MagicMock()) as mock_markdown:
+        # Initial render (defaults to Dark)
+        render_theme_toggle(location="sidebar")
+
+        # Simulate user clicking "☀️ Light"
+        st.session_state["theme_mode_selector"] = "☀️ Light"
+        _on_theme_toggle_change()
+
+        assert st.session_state["theme_mode"] == "Light"
+        assert get_current_theme() == "Light"
+
+        # Apply custom theme (as done on rerun)
+        active_theme = apply_custom_theme(show_toggle=True)
+        assert active_theme == "Light"
+        assert st.session_state["theme_mode_selector"] == "☀️ Light"
+
+        # Verify Light theme CSS was injected
+        css_injected = mock_markdown.call_args[0][0]
+        assert LIGHT_THEME["bg_main"] in css_injected
+        assert DARK_THEME["bg_main"] not in css_injected
+
+
+def test_toggle_switch_back_to_dark():
+    """Scenario C: Simulate user switching from Light back to Dark."""
+    with patch.object(st, "sidebar", MagicMock()), patch.object(st, "markdown", MagicMock()) as mock_markdown:
+        # Start in Light mode
+        set_theme("Light")
+        assert get_current_theme() == "Light"
+
+        # User selects Dark
+        st.session_state["theme_mode_selector"] = "🌙 Dark"
+        _on_theme_toggle_change()
+
+        assert st.session_state["theme_mode"] == "Dark"
+        assert get_current_theme() == "Dark"
+
+        active_theme = apply_custom_theme(show_toggle=True)
+        assert active_theme == "Dark"
+        assert st.session_state["theme_mode_selector"] == "🌙 Dark"
+
+        css_injected = mock_markdown.call_args[0][0]
+        assert DARK_THEME["bg_main"] in css_injected
+
+
+def test_cross_page_navigation_persistence():
+    """Scenario D: Verify selected theme persists across page navigations without reset."""
+    with patch.object(st, "sidebar", MagicMock()), patch.object(st, "markdown", MagicMock()):
+        # User on Page 1 switches to Light
+        set_theme("Light")
+        assert st.session_state["theme_mode"] == "Light"
+
+        # Simulate Page 2 (2_Response_Analysis.py) calling apply_custom_theme()
+        theme_p2 = apply_custom_theme(show_toggle=True)
+        assert theme_p2 == "Light"
+        assert st.session_state["theme_mode"] == "Light"
+        assert st.session_state["theme_mode_selector"] == "☀️ Light"
+
+        # Simulate Page 3 (3_Segment_Comparison.py) calling apply_custom_theme()
+        theme_p3 = apply_custom_theme(show_toggle=True)
+        assert theme_p3 == "Light"
+        assert st.session_state["theme_mode"] == "Light"
+        assert st.session_state["theme_mode_selector"] == "☀️ Light"
+
+        # Simulate Page 4 (4_Data_Quality.py) calling apply_custom_theme()
+        theme_p4 = apply_custom_theme(show_toggle=True)
+        assert theme_p4 == "Light"
+        assert st.session_state["theme_mode"] == "Light"
+        assert st.session_state["theme_mode_selector"] == "☀️ Light"
+
+
+def test_rerun_session_stability():
+    """Scenario E: Verify consecutive Streamlit reruns maintain state with no key collisions."""
+    with patch.object(st, "sidebar", MagicMock()) as mock_sidebar, patch.object(st, "markdown", MagicMock()):
+        # First execution run
+        t1 = render_theme_toggle(location="sidebar")
+        assert t1 == "Dark"
+
+        # Second execution run (normal rerun)
+        t2 = render_theme_toggle(location="sidebar")
+        assert t2 == "Dark"
+        assert st.session_state["theme_mode"] == "Dark"
+        assert st.session_state["theme_mode_selector"] == "🌙 Dark"
+
+        # Ensure both runs used the identical single key
+        for call in mock_sidebar.radio.call_args_list:
+            assert call[1]["key"] == "theme_mode_selector"
+
+
+def test_invalid_state_recovery_and_fallback():
+    """Scenario F: Verify recovery when session_state contains unrecognized or corrupted values."""
+    with patch.object(st, "sidebar", MagicMock()), patch.object(st, "markdown", MagicMock()):
+        # Corrupt theme_mode
+        st.session_state["theme_mode"] = "CorruptedHighContrast"
+        assert get_current_theme() == "Dark"
+
+        # Corrupt selector
+        st.session_state["theme_mode_selector"] = "MalformedOption"
+
+        # render_theme_toggle should heal the state to default Dark
+        recovered = render_theme_toggle(location="sidebar")
+        assert recovered == "Dark"
+        assert st.session_state["theme_mode"] == "Dark"
+        assert st.session_state["theme_mode_selector"] == "🌙 Dark"
 
 
 # -----------------------------------------------------------------------------
