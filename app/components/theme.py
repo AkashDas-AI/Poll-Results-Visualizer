@@ -30,6 +30,12 @@ DARK_THEME: Dict[str, Any] = {
     "chart_grid": "rgba(128, 128, 128, 0.15)",
     "chart_font_color": "#F1F5F9",
     "chart_secondary_color": "#A0AEC0",
+    "chart_paper": "rgba(0, 0, 0, 0)",
+    "chart_bg": "rgba(0, 0, 0, 0)",
+    "hover_bg": "#1C2433",
+    "hover_text": "#F1F5F9",
+    "hover_border": "#30394A",
+    "font_family": "Arial, sans-serif",
 }
 
 LIGHT_THEME: Dict[str, Any] = {
@@ -47,6 +53,12 @@ LIGHT_THEME: Dict[str, Any] = {
     "chart_grid": "rgba(0, 0, 0, 0.08)",
     "chart_font_color": "#0F172A",
     "chart_secondary_color": "#475569",
+    "chart_paper": "rgba(0, 0, 0, 0)",
+    "chart_bg": "rgba(0, 0, 0, 0)",
+    "hover_bg": "#FFFFFF",
+    "hover_text": "#0F172A",
+    "hover_border": "#CBD5E1",
+    "font_family": "Arial, sans-serif",
 }
 
 THEMES: Dict[str, Dict[str, Any]] = {
@@ -297,15 +309,41 @@ def get_current_theme() -> str:
 
 
 def get_theme_config(theme: Optional[str] = None) -> Dict[str, Any]:
-    """Retrieve color palette and template configuration for the specified or active theme."""
-    if theme is None:
-        theme = get_current_theme()
-    return THEMES.get(theme, DARK_THEME)
+    """Retrieve color palette and template configuration for the specified or active theme.
+
+    Args:
+        theme: Optional explicit theme override ('Dark' or 'Light'). If None,
+            the active theme from get_current_theme() is returned.
+
+    Returns:
+        Dict[str, Any]: Theme palette and configuration dictionary.
+
+    Raises:
+        ValueError: If an explicit theme string is provided that is not recognized.
+    """
+    if theme is not None:
+        if theme not in THEMES:
+            raise ValueError(
+                f"Invalid theme '{theme}'. Expected one of: {list(THEMES.keys())}"
+            )
+        return THEMES[theme]
+    return THEMES[get_current_theme()]
 
 
 def set_theme(theme_name: str) -> None:
-    """Explicitly set the active theme in session state."""
-    if theme_name in THEMES and hasattr(st, "session_state"):
+    """Explicitly set the active theme in session state.
+
+    Args:
+        theme_name: Must be 'Dark' or 'Light'.
+
+    Raises:
+        ValueError: If theme_name is not in THEMES.
+    """
+    if theme_name not in THEMES:
+        raise ValueError(
+            f"Invalid theme '{theme_name}'. Expected one of: {list(THEMES.keys())}"
+        )
+    if hasattr(st, "session_state"):
         st.session_state["theme_mode"] = theme_name
         st.session_state["theme_mode_selector"] = "🌙 Dark" if theme_name == "Dark" else "☀️ Light"
 
@@ -330,12 +368,22 @@ def render_theme_toggle(location: str = "sidebar") -> str:
     """
     target = st.sidebar if location == "sidebar" else st
 
-    if "theme_mode" not in st.session_state:
+    if "theme_mode" not in st.session_state or st.session_state["theme_mode"] not in THEMES:
         st.session_state["theme_mode"] = "Dark"
 
     current = st.session_state["theme_mode"]
     expected_selector_val = "🌙 Dark" if current == "Dark" else "☀️ Light"
-    if "theme_mode_selector" not in st.session_state:
+
+    if (
+        "theme_mode_selector" not in st.session_state
+        or st.session_state["theme_mode_selector"] not in ["🌙 Dark", "☀️ Light"]
+    ):
+        st.session_state["theme_mode_selector"] = expected_selector_val
+    elif (
+        ("Light" in st.session_state["theme_mode_selector"] and current == "Dark")
+        or ("Dark" in st.session_state["theme_mode_selector"] and current == "Light")
+    ):
+        # Synchronize selector if theme_mode was updated programmatically via set_theme()
         st.session_state["theme_mode_selector"] = expected_selector_val
 
     target.markdown("### 🎨 Display Theme")
@@ -372,37 +420,52 @@ def apply_custom_theme(show_toggle: bool = True) -> str:
 
 
 def apply_chart_theme(fig: Any, theme: Optional[str] = None) -> Any:
-    """Apply the active theme's template, colors, and transparent canvas to a Plotly figure.
+    """Apply the active theme's template, colors, typography, and transparent canvas to a Plotly figure.
+
+    Preserves existing traces, underlying data, customdata, and visual bindings.
 
     Args:
-        fig: A Plotly Figure object (go.Figure).
-        theme: Optional explicit theme override ('Dark' or 'Light').
+        fig: A Plotly Figure object (go.Figure), or None.
+        theme: Optional explicit theme override ('Dark' or 'Light'). If None,
+            the active theme from get_current_theme() is used.
 
     Returns:
-        The styled Plotly Figure.
+        The styled Plotly Figure, or None if fig is None.
+
+    Raises:
+        ValueError: If an explicit unsupported theme string is provided.
     """
     if fig is None:
         return None
+
     cfg = get_theme_config(theme)
-    try:
-        fig.update_layout(
-            template=cfg["plotly_template"],
-            font=dict(color=cfg["text_primary"]),
-            paper_bgcolor="rgba(0,0,0,0)",
-            plot_bgcolor="rgba(0,0,0,0)",
-        )
-        fig.update_xaxes(
-            gridcolor=cfg["chart_grid"],
-            zerolinecolor=cfg["chart_grid"],
-            tickfont=dict(color=cfg["text_secondary"]),
-            title_font=dict(color=cfg["text_primary"]),
-        )
-        fig.update_yaxes(
-            gridcolor=cfg["chart_grid"],
-            zerolinecolor=cfg["chart_grid"],
-            tickfont=dict(color=cfg["text_secondary"]),
-            title_font=dict(color=cfg["text_primary"]),
-        )
-    except Exception:
-        pass
+    font_family = cfg.get("font_family", "Arial, sans-serif")
+
+    fig.update_layout(
+        template=cfg["plotly_template"],
+        font=dict(family=font_family, color=cfg["text_primary"]),
+        paper_bgcolor=cfg.get("chart_paper", "rgba(0,0,0,0)"),
+        plot_bgcolor=cfg.get("chart_bg", "rgba(0,0,0,0)"),
+        hoverlabel=dict(
+            bgcolor=cfg.get("hover_bg", cfg["bg_card"]),
+            font_color=cfg.get("hover_text", cfg["text_primary"]),
+            font_family=font_family,
+            bordercolor=cfg.get("hover_border", cfg["border"]),
+        ),
+        legend=dict(
+            font=dict(family=font_family, color=cfg["text_primary"]),
+        ),
+    )
+    fig.update_xaxes(
+        gridcolor=cfg["chart_grid"],
+        zerolinecolor=cfg["chart_grid"],
+        tickfont=dict(family=font_family, color=cfg["text_secondary"]),
+        title_font=dict(family=font_family, color=cfg["text_primary"]),
+    )
+    fig.update_yaxes(
+        gridcolor=cfg["chart_grid"],
+        zerolinecolor=cfg["chart_grid"],
+        tickfont=dict(family=font_family, color=cfg["text_secondary"]),
+        title_font=dict(family=font_family, color=cfg["text_primary"]),
+    )
     return fig
