@@ -11,14 +11,8 @@ Phase: Phase 6 — Visualization
 import sys
 from pathlib import Path
 import pandas as pd
+import plotly.express as px
 import streamlit as st
-
-try:
-    import plotly.express as px
-    HAS_PLOTLY = True
-except ImportError:
-    px = None
-    HAS_PLOTLY = False
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(PROJECT_ROOT) not in sys.path:
@@ -29,7 +23,6 @@ from app.components.filters import render_survey_demographic_filters  # noqa: E4
 from app.components.theme import apply_custom_theme, apply_chart_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_compensation_box,
-    render_plotly_chart,
 )
 from src.datasets.stackoverflow_2025 import get_compensation_summary  # noqa: E402
 
@@ -116,7 +109,7 @@ def main():
                 title="Annual Compensation Distribution by Developer Role (USD)",
                 max_groups=12,
             )
-            render_plotly_chart(fig_role_box)
+            st.plotly_chart(fig_role_box, use_container_width=True)
 
         with col_role_table:
             st.markdown("#### Role Compensation Summary")
@@ -159,7 +152,7 @@ def main():
                 title="Annual Compensation Distribution by Country (USD)",
                 max_groups=10,
             )
-            render_plotly_chart(fig_cntry_box)
+            st.plotly_chart(fig_cntry_box, use_container_width=True)
 
         with col_cntry_tbl:
             st.markdown("#### Top 10 High-Volume Countries")
@@ -216,30 +209,27 @@ def main():
         col_exp_chart, col_exp_text = st.columns([3, 2])
 
         with col_exp_chart:
-            if HAS_PLOTLY:
-                fig_exp_box = px.box(
-                    comp_exp_df,
-                    x="Experience Bracket",
-                    y="ConvertedCompYearly",
-                    category_orders={"Experience Bracket": labels},
-                    title="<b>Compensation by Professional Experience Bracket</b>",
-                    color="Experience Bracket",
-                    color_discrete_sequence=px.colors.qualitative.Safe,
-                )
-                fig_exp_box.update_layout(
-                    showlegend=False,
-                    yaxis_title="Annual Compensation (USD)",
-                    xaxis_title="",
-                    yaxis=dict(
-                        tickprefix="$",
-                        tickformat=",.0f",
-                    ),
-                    margin=dict(l=20, r=20, t=50, b=40),
-                )
-                apply_chart_theme(fig_exp_box)
-                render_plotly_chart(fig_exp_box)
-            else:
-                render_plotly_chart(None, "Compensation by Experience Bracket requires the 'plotly' package.")
+            fig_exp_box = px.box(
+                comp_exp_df,
+                x="Experience Bracket",
+                y="ConvertedCompYearly",
+                category_orders={"Experience Bracket": labels},
+                title="<b>Compensation by Professional Experience Bracket</b>",
+                color="Experience Bracket",
+                color_discrete_sequence=px.colors.qualitative.Safe,
+            )
+            fig_exp_box.update_layout(
+                showlegend=False,
+                yaxis_title="Annual Compensation (USD)",
+                xaxis_title="",
+                yaxis=dict(
+                    tickprefix="$",
+                    tickformat=",.0f",
+                ),
+                margin=dict(l=20, r=20, t=50, b=40),
+            )
+            apply_chart_theme(fig_exp_box)
+            st.plotly_chart(fig_exp_box, use_container_width=True)
 
         with col_exp_text:
             st.markdown("#### Concave Experience Returns")
@@ -293,29 +283,26 @@ def main():
         col_rw_box, col_rw_memo = st.columns([3, 2])
 
         with col_rw_box:
-            if HAS_PLOTLY:
-                fig_rw_box = px.box(
-                    rw_comp_df,
-                    x="Arrangement",
-                    y="ConvertedCompYearly",
-                    title="<b>Compensation by Working Arrangement (USD)</b>",
-                    color="Arrangement",
-                    color_discrete_sequence=["#3B82F6", "#F59E0B", "#22C55E"],
-                )
-                fig_rw_box.update_layout(
-                    showlegend=False,
-                    yaxis_title="Annual Compensation (USD)",
-                    xaxis_title="",
-                    yaxis=dict(
-                        tickprefix="$",
-                        tickformat=",.0f",
-                    ),
-                    margin=dict(l=20, r=20, t=50, b=40),
-                )
-                apply_chart_theme(fig_rw_box)
-                render_plotly_chart(fig_rw_box)
-            else:
-                render_plotly_chart(None, "Compensation by Working Arrangement requires the 'plotly' package.")
+            fig_rw_box = px.box(
+                rw_comp_df,
+                x="Arrangement",
+                y="ConvertedCompYearly",
+                title="<b>Compensation by Working Arrangement (USD)</b>",
+                color="Arrangement",
+                color_discrete_sequence=["#3B82F6", "#F59E0B", "#22C55E"],
+            )
+            fig_rw_box.update_layout(
+                showlegend=False,
+                yaxis_title="Annual Compensation (USD)",
+                xaxis_title="",
+                yaxis=dict(
+                    tickprefix="$",
+                    tickformat=",.0f",
+                ),
+                margin=dict(l=20, r=20, t=50, b=40),
+            )
+            apply_chart_theme(fig_rw_box)
+            st.plotly_chart(fig_rw_box, use_container_width=True)
 
         with col_rw_memo:
             st.markdown("#### The Attenuation Mechanism Explained")

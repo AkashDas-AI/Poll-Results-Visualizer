@@ -10,10 +10,24 @@ Phase: Phase 3 — Theme Architecture Hardening
 
 import pytest
 from unittest.mock import MagicMock, patch
-import streamlit as st
+import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io as pio
+import streamlit as st
 
+from app.components.charts import (
+    plot_distribution_bar,
+    plot_distribution_pie,
+    plot_segment_breakdown_bar,
+    plot_trend_line,
+    plot_horizontal_bar_with_denominators,
+    plot_technology_comparison_bar,
+    plot_compensation_box,
+    plot_missingness_ranking_bar,
+    plot_sample_flow_funnel,
+    _empty_figure,
+)
 from app.components.theme import (
     DARK_THEME,
     LIGHT_THEME,
@@ -392,3 +406,145 @@ def test_scoped_css_definitions():
     assert LIGHT_THEME["bg_main"] in CUSTOM_THEME_CSS_LIGHT
     assert LIGHT_THEME["bg_card"] in CUSTOM_THEME_CSS_LIGHT
     assert 'div[data-testid="stMetric"]' in CUSTOM_THEME_CSS_LIGHT
+
+
+# -----------------------------------------------------------------------------
+# 5. Comprehensive 14-Chart Theming & Mode Adaptation Audit (Phase 5)
+# -----------------------------------------------------------------------------
+
+@pytest.fixture
+def sample_chart_datasets():
+    """Return synthetic sample datasets for all chart generators."""
+    return {
+        "dist": pd.DataFrame({
+            "option": ["Python", "Rust", "JavaScript"],
+            "response_count": [300, 150, 450],
+            "percentage": [33.3, 16.7, 50.0],
+        }),
+        "segment": pd.DataFrame({
+            "segment": ["0-2 yrs", "0-2 yrs", "3-5 yrs", "3-5 yrs"],
+            "option": ["Remote", "In-person", "Remote", "In-person"],
+            "percentage": [60.0, 40.0, 70.0, 30.0],
+            "response_count": [60, 40, 70, 30],
+        }),
+        "trend": pd.DataFrame({
+            "date": pd.date_range("2025-06-01", periods=5),
+            "response_count": [100, 250, 300, 280, 190],
+        }),
+        "tech": pd.DataFrame({
+            "option": ["Rust", "Python", "Go"],
+            "pct_of_respondents_current": [12.5, 58.1, 15.0],
+            "pct_of_respondents_desired": [31.0, 45.4, 25.6],
+        }),
+        "comp": pd.DataFrame({
+            "DevType": ["DevOps", "DevOps", "Full-Stack", "Full-Stack"],
+            "ConvertedCompYearly": [110000.0, 130000.0, 95000.0, 105000.0],
+        }),
+        "missing": pd.DataFrame({
+            "column": ["RemoteWork", "EdLevel", "YearsCode"],
+            "missing_count": [15411, 230, 100],
+            "missing_pct": [31.3, 0.5, 0.2],
+            "non_null_count": [33780, 48961, 49091],
+        }),
+        "funnel_names": ["Stage 1", "Stage 2", "Stage 3"],
+        "funnel_counts": [49191, 23947, 22769],
+    }
+
+
+@pytest.mark.parametrize("theme_name", ["Dark", "Light"])
+def test_all_10_shared_chart_generators_under_theme(sample_chart_datasets, theme_name):
+    """Verify all 10 shared chart generators correctly apply Dark and Light themes."""
+    cfg = DARK_THEME if theme_name == "Dark" else LIGHT_THEME
+    expected_tpl = pio.templates[cfg["plotly_template"]]
+    ds = sample_chart_datasets
+
+    # 1. plot_distribution_bar
+    f1 = plot_distribution_bar(ds["dist"], theme=theme_name)
+    assert f1.layout.template == expected_tpl
+    assert f1.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 2. plot_distribution_pie
+    f2 = plot_distribution_pie(ds["dist"], theme=theme_name)
+    assert f2.layout.template == expected_tpl
+    assert f2.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 3. plot_segment_breakdown_bar
+    f3 = plot_segment_breakdown_bar(ds["segment"], theme=theme_name)
+    assert f3.layout.template == expected_tpl
+    assert f3.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 4. plot_trend_line
+    f4 = plot_trend_line(ds["trend"], theme=theme_name)
+    assert f4.layout.template == expected_tpl
+    assert f4.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 5. plot_horizontal_bar_with_denominators
+    f5 = plot_horizontal_bar_with_denominators(
+        ds["dist"], "option", "response_count", n_answered=900, theme=theme_name
+    )
+    assert f5.layout.template == expected_tpl
+    assert f5.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 6. plot_technology_comparison_bar
+    f6 = plot_technology_comparison_bar(
+        ds["tech"], tech_col="option", current_col="pct_of_respondents_current",
+        desired_col="pct_of_respondents_desired", theme=theme_name
+    )
+    assert f6.layout.template == expected_tpl
+    assert f6.layout.paper_bgcolor == cfg["chart_paper"]
+    assert f6.data[0].marker.color == cfg["accent_primary"]
+    assert f6.data[1].marker.color == cfg["indicator_positive"]
+
+    # 7. plot_compensation_box
+    f7 = plot_compensation_box(ds["comp"], group_col="DevType", theme=theme_name)
+    assert f7.layout.template == expected_tpl
+    assert f7.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 8. plot_missingness_ranking_bar
+    f8 = plot_missingness_ranking_bar(ds["missing"], theme=theme_name)
+    assert f8.layout.template == expected_tpl
+    assert f8.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 9. plot_sample_flow_funnel
+    f9 = plot_sample_flow_funnel(ds["funnel_names"], ds["funnel_counts"], theme=theme_name)
+    assert f9.layout.template == expected_tpl
+    assert f9.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 10. _empty_figure
+    f10 = _empty_figure("Notice", theme=theme_name)
+    assert f10.layout.template == expected_tpl
+    assert f10.layout.paper_bgcolor == cfg["chart_paper"]
+
+
+@pytest.mark.parametrize("theme_name", ["Dark", "Light"])
+def test_all_4_page_inline_figures_under_theme(sample_chart_datasets, theme_name):
+    """Verify all 4 page-level inline figures correctly apply Dark and Light themes."""
+    cfg = DARK_THEME if theme_name == "Dark" else LIGHT_THEME
+    expected_tpl = pio.templates[cfg["plotly_template"]]
+    ds = sample_chart_datasets
+
+    # 11. Inline fig_age (1_Overview.py)
+    fig_age = px.bar(ds["dist"], x="option", y="percentage", title="Age Cohort Distribution")
+    apply_chart_theme(fig_age, theme=theme_name)
+    assert fig_age.layout.template == expected_tpl
+    assert fig_age.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 12. Inline fig_exp (1_Overview.py)
+    fig_exp = go.Figure()
+    fig_exp.add_trace(go.Box(x=[5, 10, 15], name="Years Coding", marker_color="#3B82F6"))
+    fig_exp.add_trace(go.Box(x=[2, 6, 12], name="Work Exp", marker_color="#22C55E"))
+    apply_chart_theme(fig_exp, theme=theme_name)
+    assert fig_exp.layout.template == expected_tpl
+    assert fig_exp.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 13. Inline fig_exp_box (3_Segment_Comparison.py)
+    fig_exp_box = px.box(ds["comp"], x="DevType", y="ConvertedCompYearly", title="Exp Box")
+    apply_chart_theme(fig_exp_box, theme=theme_name)
+    assert fig_exp_box.layout.template == expected_tpl
+    assert fig_exp_box.layout.paper_bgcolor == cfg["chart_paper"]
+
+    # 14. Inline fig_rw_box (3_Segment_Comparison.py)
+    fig_rw_box = px.box(ds["comp"], x="DevType", y="ConvertedCompYearly", title="RW Box")
+    apply_chart_theme(fig_rw_box, theme=theme_name)
+    assert fig_rw_box.layout.template == expected_tpl
+    assert fig_rw_box.layout.paper_bgcolor == cfg["chart_paper"]

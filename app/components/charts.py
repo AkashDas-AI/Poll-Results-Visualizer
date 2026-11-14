@@ -9,19 +9,11 @@ Project: Poll Results Visualizer
 Phase: Phase 6 — Visualization (Theme Enhancement)
 """
 
-from typing import Any, List, Optional
+from typing import List, Optional
 import numpy as np
 import pandas as pd
-import streamlit as st
-
-try:
-    import plotly.express as px
-    import plotly.graph_objects as go
-    HAS_PLOTLY = True
-except ImportError:
-    px = None
-    go = None
-    HAS_PLOTLY = False
+import plotly.express as px
+import plotly.graph_objects as go
 
 from src.config import COL_OPTION, COL_SEGMENT
 from app.components.theme import (
@@ -31,34 +23,15 @@ from app.components.theme import (
 
 CHART_FONT_FAMILY = "Arial, sans-serif"
 DEFAULT_CHART_TEMPLATE = "plotly_dark"
-CHART_BG_TRANSPARENT = "rgba(0,0,0,0)"
+CHART_BG_TRANSPARENT = "rgba(0, 0, 0, 0)"
 CHART_GRID_COLOR = "rgba(128, 128, 128, 0.15)"
-
-
-def render_plotly_chart(
-    fig: Any,
-    fallback_message: Optional[str] = None,
-    use_container_width: bool = True,
-) -> None:
-    """Safely render a Plotly figure with graceful fallback when plotly is not installed."""
-    if not HAS_PLOTLY or fig is None:
-        msg = fallback_message or "Interactive chart display requires the 'plotly' package."
-        st.warning(
-            f"📊 **Visualization Notice:** {msg}\n\n"
-            "*The `plotly` package is not installed in the active Python environment. "
-            "Please activate the project `.venv` and install `requirements.txt` to enable interactive visualizations.*"
-        )
-        return
-    st.plotly_chart(fig, use_container_width=use_container_width)
 
 
 def _empty_figure(
     message: str = "No data available matching active criteria",
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Create a standardized empty Plotly figure with a clear notice message."""
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     fig = go.Figure()
     fig.add_annotation(
@@ -78,6 +51,7 @@ def _empty_figure(
         yaxis=dict(showgrid=False, showticklabels=False, zeroline=False),
         margin=dict(l=20, r=20, t=50, b=30),
     )
+    apply_chart_theme(fig, theme=theme)
     return fig
 
 
@@ -85,7 +59,7 @@ def plot_distribution_bar(
     dist_df: pd.DataFrame,
     title: str = "Response Distribution",
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a horizontal bar chart displaying option percentages.
 
     Args:
@@ -94,10 +68,8 @@ def plot_distribution_bar(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Configured Plotly figure, or None if plotly is unavailable.
+        go.Figure: Configured Plotly figure.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if dist_df.empty or COL_OPTION not in dist_df.columns or "percentage" not in dist_df.columns:
         return _empty_figure("No response data available", theme=theme)
@@ -138,7 +110,7 @@ def plot_distribution_pie(
     dist_df: pd.DataFrame,
     title: str = "Share Breakdown",
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a donut chart for option share breakdown.
 
     Args:
@@ -147,10 +119,8 @@ def plot_distribution_pie(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Plotly figure, or None if plotly is unavailable.
+        go.Figure: Plotly figure.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if dist_df.empty or COL_OPTION not in dist_df.columns or "response_count" not in dist_df.columns:
         return _empty_figure("No breakdown data available", theme=theme)
@@ -179,7 +149,7 @@ def plot_segment_breakdown_bar(
     segment_df: pd.DataFrame,
     title: str = "Segment Breakdown",
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a grouped bar chart comparing option percentages across demographic segments.
 
     Args:
@@ -188,10 +158,8 @@ def plot_segment_breakdown_bar(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Plotly figure, or None if plotly is unavailable.
+        go.Figure: Plotly figure.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if segment_df.empty or COL_SEGMENT not in segment_df.columns:
         return _empty_figure("No segment comparison data available", theme=theme)
@@ -227,7 +195,7 @@ def plot_trend_line(
     trend_df: pd.DataFrame,
     title: str = "Response Volume Over Time",
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a line chart tracking response volume across dates.
 
     Args:
@@ -236,10 +204,8 @@ def plot_trend_line(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Plotly figure, or None if plotly is unavailable.
+        go.Figure: Plotly figure.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if trend_df.empty or "date" not in trend_df.columns or "response_count" not in trend_df.columns:
         return _empty_figure("No trend data available", theme=theme)
@@ -278,7 +244,7 @@ def plot_horizontal_bar_with_denominators(
     color_scale: str = "Blues",
     height: Optional[int] = None,
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a horizontal bar chart displaying dual percentages and counts in hover.
 
     Reports:
@@ -298,10 +264,8 @@ def plot_horizontal_bar_with_denominators(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Formatted Plotly figure, or None if plotly is unavailable.
+        go.Figure: Formatted Plotly figure.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if df.empty or category_col not in df.columns or count_col not in df.columns:
         return _empty_figure("No data available for distribution", theme=theme)
@@ -388,7 +352,7 @@ def plot_technology_comparison_bar(
     title: str = "Current vs. Desired Technology Adoption",
     top_n: int = 15,
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a paired grouped horizontal bar chart comparing current vs. desired usage.
 
     Args:
@@ -401,10 +365,8 @@ def plot_technology_comparison_bar(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Configured paired bar chart, or None if plotly is unavailable.
+        go.Figure: Configured paired bar chart.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if comparison_df.empty or tech_col not in comparison_df.columns:
         return _empty_figure("No technology comparison data available", theme=theme)
@@ -469,7 +431,7 @@ def plot_compensation_box(
     max_groups: int = 12,
     show_points: bool = False,
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate an interactive box plot comparing annual compensation across cohorts.
 
     Args:
@@ -482,10 +444,8 @@ def plot_compensation_box(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Configured box plot, or None if plotly is unavailable.
+        go.Figure: Configured box plot.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if df.empty or group_col not in df.columns or comp_col not in df.columns:
         return _empty_figure("No compensation data available for comparison", theme=theme)
@@ -547,7 +507,7 @@ def plot_missingness_ranking_bar(
     title: str = "Top 20 Survey Questions by Non-Response / Missingness Rate",
     top_n: int = 20,
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a horizontal bar chart displaying ranked non-response rates.
 
     Args:
@@ -557,10 +517,8 @@ def plot_missingness_ranking_bar(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Ranked missingness bar chart, or None if plotly is unavailable.
+        go.Figure: Ranked missingness bar chart.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if missing_df.empty or "column" not in missing_df.columns or "missing_pct" not in missing_df.columns:
         return _empty_figure("No missingness data available", theme=theme)
@@ -616,7 +574,7 @@ def plot_sample_flow_funnel(
     stage_counts: List[int],
     title: str = "Sample Qualification & Complete-Case Filtering Flow",
     theme: Optional[str] = None,
-) -> Any:
+) -> go.Figure:
     """Generate a funnel chart visualizing sample flow drops across analytical stages.
 
     Args:
@@ -626,10 +584,8 @@ def plot_sample_flow_funnel(
         theme: Optional explicit theme override ('Dark' or 'Light').
 
     Returns:
-        Funnel figure, or None if plotly is unavailable.
+        go.Figure: Funnel figure.
     """
-    if not HAS_PLOTLY:
-        return None
     cfg = get_theme_config(theme)
     if not stage_names or not stage_counts or len(stage_names) != len(stage_counts):
         return _empty_figure("No sample flow data available", theme=theme)
