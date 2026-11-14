@@ -31,8 +31,9 @@ The application eliminates black-box shortcuts by implementing an independent ec
 3. **Optimized High-Performance Storage:** Convert raw 140.8 MB CSV data into an Apache Parquet format using Snappy compression, cutting storage footprint by $92.6\%$ (down to $9.8$ MB) and accelerating cold-load times tenfold.
 4. **Decoupled Software Architecture:** Enforce strict architectural boundaries between data ingestion, econometric modeling, chart generation, and UI views, ensuring the analytical engine is 100% testable via standard `pytest` runners.
 5. **Interactive Executive Visualization:** Deliver a responsive, multi-page Streamlit and Plotly dashboard featuring dynamic demographic cohort slicing, sub-second caching (`@st.cache_data`), sample flow funnels, and in-memory CSV export streams.
-6. **Non-Causal Analytical Governance:** Uphold strict observational framing across all automated narratives, reminding stakeholders that cross-sectional survey comparisons reflect sample associations rather than causal effects.
-7. **Production Code Quality:** Maintain an exhaustive test suite (93 unit tests, 100% pass rate), zero Flake8 linting errors, immutable cryptographic dataset hashes (SHA-256), and an automated pre-publication security scan confirming 0 leaked credentials.
+6. **Centralized Light/Dark Theme Architecture:** Implement an enterprise design system in `app/components/theme.py` featuring a persistent sidebar radio toggle (`theme_mode_selector`), session state persistence (`theme_mode`: `"Dark"` / `"Light"`), scoped CSS injection, and dynamic Plotly figure theming (`apply_chart_theme`) across all 14 dashboard charts.
+7. **Non-Causal Analytical Governance:** Uphold strict observational framing across all automated narratives, reminding stakeholders that cross-sectional survey comparisons reflect sample associations rather than causal effects.
+8. **Production Code Quality:** Maintain an exhaustive test suite (116 unit tests: 115 passed, 1 skipped), zero Flake8 linting errors across all modules, immutable cryptographic dataset hashes (SHA-256), and an automated pre-publication security scan confirming 0 leaked credentials.
 
 ---
 
@@ -46,8 +47,8 @@ The application eliminates black-box shortcuts by implementing an independent ec
 | **Econometric Engine** | Pure Python / NumPy | - | Closed-form OLS, White HC1, VIF, Chi-Square, and ANOVA from scratch. |
 | **Data Visualization** | Plotly | 5.24.1 | Interactive, accessible charts with shared themes and hover templates. |
 | **Application UI** | Streamlit | 1.40.2 | Reactive multi-page web dashboard with `@st.cache_data` memory caching. |
-| **Testing Framework** | Pytest | 8.3.4 | Automated unit test suite with 93 passing tests and CI skip guards. |
-| **Code Style & Linting** | Flake8 | 7.1.1 | PEP 8 style guide enforcement with zero warnings and zero errors. |
+| **Testing Framework** | Pytest | 8.3.4 | Automated unit test suite with 116 tests (115 passed, 1 skipped) and CI skip guards. |
+| **Code Style & Linting** | Flake8 | 7.1.1 | PEP 8 style guide enforcement with zero warnings and zero errors across app, src, tests, tools. |
 | **CI / CD Automation** | GitHub Actions | - | Automated linting and test execution matrix on Python 3.10 and 3.11. |
 
 ---
