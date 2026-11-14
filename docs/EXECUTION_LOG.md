@@ -1627,6 +1627,42 @@ Configured all development caches to remain strictly within the project boundary
 - **Telemetry & Tables Resilience:** All non-chart components (KPI cards, demographic dataframes, methodology notices, and the sidebar theme toggle) render with 100% stability even when `plotly` is not installed.
 - **Verification:** Dynamically loaded all five dashboard modules using standard Python; verified all five pages load cleanly with `HAS_PLOTLY = False` with zero tracebacks or unhandled exceptions.
 
+---
+
+## [2026-11-14] - Runtime Verification in Pinned Environment, CI Test Parity & Post-Test Workstation Cleanup
+
+**Author:** Akash Das  
+**Execution Context:** End-to-End Test Suite Execution, Linting Audit, CI Failure Analysis & Local Environment Pruning  
+**Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`
+
+### 1. Verification of Pinned Environment & Interactive Visualizations
+- Created an ephemeral project-local virtual environment (`.venv/`) using Python 3.11 with project-local cache routing (`--cache-dir .cache/pip`).
+- Installed `requirements-dev.txt` (`plotly==5.24.1`, `streamlit==1.67.0`, `pandas==2.3.3`, `pyarrow==19.0.1`, `numpy==2.4.6`, `pytest==8.4.2`, `flake8==7.3.0`).
+- Validated dynamic loading and chart generation across `app/streamlit_app.py`, `app/components/charts.py`, `app/components/theme.py`, and all 4 analytical pages (`1_Overview.py`, `2_Response_Analysis.py`, `3_Segment_Comparison.py`, `4_Data_Quality.py`).
+- Confirmed `HAS_PLOTLY == True` inside the active environment, enabling dual-theme interactive Plotly charts with zero console warnings or layout distortions.
+
+### 2. Code Quality Audit & Flake8 Cleanliness
+- Executed strict static analysis via Flake8 across all project modules:
+  ```powershell
+  flake8 app src tests tools
+  ```
+- Removed unused imports in `app/components/charts.py` (`get_current_theme`), `app/pages/1_Overview.py` (`CHART_FONT_FAMILY`, `DEFAULT_CHART_TEMPLATE`), and `app/pages/3_Segment_Comparison.py` (`CHART_FONT_FAMILY`, `DEFAULT_CHART_TEMPLATE`).
+- Achieved **0 errors, 0 warnings** across all 35 modules.
+
+### 3. Automated Test Suite Execution & CI Parity Confirmation
+- Executed full Pytest suite:
+  ```powershell
+  pytest -q
+  ```
+- **Outcome:** **92 passed, 1 skipped in 7.00s** (100% core test pass rate).
+- **CI Test Parity & Interview Confidentiality Guard:** Confirmed that `tests/test_insights.py::test_phase7_reporting_deliverables_integrity` conditionally checks for candidate study documents (`docs/INTERVIEW_PREPARATION.md`, `docs/PORTFOLIO_PRESENTATION_GUIDE.md`) only when present locally, while strictly validating public deliverables (`reports/project_report.md`, `reports/key_insights_report.md`, `reports/recommendations_report.md`). This eliminates remote CI check failures on clean clones without exposing private candidate materials.
+
+### 4. Post-Verification Workstation Cleanup
+- Removed temporary virtual environment `.venv/` and local caches (`.cache/pip`, `.cache/pytest`, `.tmp/`).
+- Verified zero temporary files or global packages were left behind outside the project directory.
+- Re-confirmed repository footprint remains at the optimized **74.69 MB** baseline.
+
+
 
 
 
