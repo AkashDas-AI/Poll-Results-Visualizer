@@ -5,7 +5,7 @@
 **Current Milestone:** Phase 8 - Final Project Polish, GitHub Preparation and Publication  
 **Primary Dataset:** Stack Overflow Annual Developer Survey 2025  
 **Quality Assurance Stack:** pytest (>= 8.0.0), flake8 (>= 7.0.0), GitHub Actions CI  
-**Test Suite Status:** 93 Passed out of 93 Tests (100% Pass Rate) | 0 Flake8 Linting Errors  
+**Test Suite Status:** 116 Items (115 Passed, 1 Skipped, 100% Core Pass Rate) | 0 Flake8 Linting Errors across app, src, tests, tools
 
 ---
 
@@ -64,7 +64,7 @@ The testing architecture of **Poll Results Visualizer** is designed to guarantee
 
 ## 2. Test Suite Directory Structure and Inventory
 
-The automated test suite comprises **93 unit and integration tests** organized across 10 specialized test modules in the `tests/` directory:
+The automated test suite comprises **116 unit and integration test items** organized across 11 specialized test modules in the `tests/` directory:
 
 ```
 tests/
@@ -78,7 +78,8 @@ tests/
 |-- test_insights.py                            #  4 tests: Automated narrative generation and Phase 7 integrity
 |-- test_stackoverflow_2025.py                  # 19 tests: SO 2025 adapter, multi-select, and currencies
 |-- test_stackoverflow_cleaning.py              # 11 tests: Experience classification, cleaning, and Parquet IO
-`-- test_statistical_engine_validation.py       #  7 tests: Independent closed-form mathematical proofs
+|-- test_statistical_engine_validation.py       #  7 tests: Independent closed-form mathematical proofs
+`-- test_theme.py                               # 23 tests: Centralized theme architecture, state lifecycle, and 14 Plotly charts
 ```
 
 ---
@@ -258,59 +259,84 @@ Independent closed-form mathematical benchmark proofs validating our statistical
 
 ---
 
+### 3.11. `tests/test_theme.py` (23 Tests)
+Validates the centralized Light/Dark theme architecture, 20-key palette schema symmetry, session-state lifecycle persistence (Scenarios A–F), Plotly figure styling, and parameterized theming across all 14 dashboard charts.
+
+| Test Function | Verification Scope | Assertions / Invariants |
+|---|---|---|
+| `test_theme_palette_schema` | Verifies `DARK_THEME` and `LIGHT_THEME` define identical 20-key contracts. | Schema symmetry, templates (`plotly_dark`, `plotly_white`), font family. |
+| `test_theme_registry_contains_both_themes` | Audits `THEMES` dictionary registry. | `"Dark"` and `"Light"` are registered and point to canonical dicts. |
+| `test_get_current_theme_default_headless` | Default fallback when `st.session_state` is uninitialized or headless. | Returns `"Dark"` default safely without throwing exceptions. |
+| `test_get_current_theme_from_session_state` | Reads active selection from `st.session_state["theme_mode"]`. | Reflects session state; safely recovers from unrecognized modes to `"Dark"`. |
+| `test_get_theme_config` | Retrieves palette dict by theme name or raises `ValueError`. | Returns exact palette; rejects invalid theme strings with `ValueError`. |
+| `test_set_theme` | Programmatic setter for `theme_mode` and `theme_mode_selector`. | Sets both session state keys synchronously; validates theme name. |
+| `test_on_theme_toggle_change_callback` | Radio toggle callback parser. | Parses `"🌙 Dark"` $\rightarrow$ `"Dark"`, `"☀️ Light"` $\rightarrow$ `"Light"`. |
+| `test_fresh_session_dark_default` (Scenario A) | Fresh session initialization. | Defaults to `"Dark"`, renders radio with key `"theme_mode_selector"`. |
+| `test_toggle_switch_to_light` (Scenario B) | User selects Light mode. | State updates to `"Light"`, injects `CUSTOM_THEME_CSS_LIGHT`. |
+| `test_toggle_switch_back_to_dark` (Scenario C) | User switches back to Dark mode. | State updates to `"Dark"`, injects `CUSTOM_THEME_CSS_DARK`. |
+| `test_cross_page_navigation_persistence` (Scenario D) | Cross-page navigation persistence. | Selection persists across simulated pages 1, 2, 3, and 4 without reset. |
+| `test_rerun_session_stability` (Scenario E) | Consecutive execution rerun stability. | Preserves state across multiple runs without key collisions. |
+| `test_invalid_state_recovery_and_fallback` (Scenario F) | Corrupted session state healing. | Gracefully recovers corrupted mode/selector values to `"Dark"`. |
+| `test_apply_chart_theme_none_guard` | Defensive handling of `fig=None`. | Returns `None` defensively without crashing. |
+| `test_apply_chart_theme_invalid_theme_raises` | Unsupported theme name validation. | Raises `ValueError` upon unsupported theme string. |
+| `test_apply_chart_theme_dark_styling` | Dark layout properties applied to Plotly figure. | Template `plotly_dark`, font `#F1F5F9`, transparent paper/plot bgcolor. |
+| `test_apply_chart_theme_light_styling` | Light layout properties applied to Plotly figure. | Template `plotly_white`, font `#0F172A`, transparent paper/plot bgcolor. |
+| `test_apply_chart_theme_preserves_traces_and_data` | Trace and data immutability. | Preserves `x`, `y`, `customdata`, `text`, and trace types unchanged. |
+| `test_scoped_css_definitions` | Scoped CSS template validation. | Confirms CSS templates target `stApp`, `stSidebar`, `stMetric`, etc. |
+| `test_all_10_shared_chart_generators_under_theme` | Parameterized audit of all 10 shared chart generators under Dark and Light. | Validates template and transparent paper/plot bgcolor across 10 generators. |
+| `test_all_4_page_inline_figures_under_theme` | Parameterized audit of 4 page-level inline figures under Dark and Light. | Validates template and transparent bgcolor on `fig_age`, `fig_exp`, `fig_exp_box`, `fig_rw_box`. |
+
+---
+
 ## 4. Test Execution Instructions
 
-### Prerequisites
-Ensure your local environment has the project dependencies installed within `.venv`:
-```bash
-# Activate virtual environment
-# Windows PowerShell:
-.\.venv\Scripts\Activate.ps1
-# Linux / macOS:
-source .venv/bin/activate
+### Prerequisites & Environment Restoration
+If `.venv` was removed during post-publication storage reclamation, recreate it using the project-local virtual environment:
+```powershell
+# Open terminal in project root
+cd "D:\Projects\Data Science\Poll Results Visualizer"
 
-# Verify dependencies
-pip install -r requirements-dev.txt
+# Recreate Python 3.11 virtual environment
+py -3.11 -m venv .venv
+
+# Install dependencies using project-local cache
+.\.venv\Scripts\python.exe -m pip install --cache-dir .cache/pip -r requirements-dev.txt
 ```
 
 ### 1. Execute Complete Test Suite
-Run all 93 unit tests with default configuration:
-```bash
-pytest
+Run all 116 test items:
+```powershell
+.\.venv\Scripts\pytest -q
 ```
-*Expected duration:* $\approx 8 - 12$ seconds.  
-*Expected outcome:* `93 passed in XX.XXs`.
+*Expected duration:* $\approx 9 - 11$ seconds.<br>
+*Expected outcome:* `115 passed, 1 skipped in ~10s`.
 
 ### 2. Verbose Output with Execution Durations
-Profile the top 10 slowest executing tests to monitor performance:
-```bash
-pytest -v --durations=10
+```powershell
+.\.venv\Scripts\pytest -v --durations=10
 ```
 
 ### 3. Targeted Test Execution
 Execute specific modules, classes, or individual test functions:
 
-```bash
+```powershell
+# Run centralized theme architecture tests only
+.\.venv\Scripts\pytest tests/test_theme.py
+
 # Run statistical engine tests only
-pytest tests/test_analysis.py
+.\.venv\Scripts\pytest tests/test_analysis.py
 
 # Run mathematical benchmark validation tests only
-pytest tests/test_statistical_engine_validation.py
+.\.venv\Scripts\pytest tests/test_statistical_engine_validation.py
 
 # Run dashboard visual component tests only
-pytest tests/test_dashboard_components.py
-
-# Run a specific test function by name pattern
-pytest -k "test_remotework_contingency_table_exact_reconciliation"
-
-# Stop immediately upon first test failure
-pytest -x
+.\.venv\Scripts\pytest tests/test_dashboard_components.py
 ```
 
 ### 4. Flake8 Linting Enforcement
 Audit all project code for strict PEP 8 conformance:
-```bash
-flake8 app src tests
+```powershell
+.\.venv\Scripts\flake8 app src tests tools
 ```
 *Expected outcome:* Exit code 0 with zero output (no errors, no warnings).
 
