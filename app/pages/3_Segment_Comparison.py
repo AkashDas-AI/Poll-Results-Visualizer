@@ -30,8 +30,6 @@ from app.components.theme import apply_custom_theme, apply_chart_theme  # noqa: 
 from app.components.charts import (  # noqa: E402
     plot_compensation_box,
     render_plotly_chart,
-    CHART_FONT_FAMILY,
-    DEFAULT_CHART_TEMPLATE,
 )
 from src.datasets.stackoverflow_2025 import get_compensation_summary  # noqa: E402
 

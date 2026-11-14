@@ -26,7 +26,6 @@ except ImportError:
 from src.config import COL_OPTION, COL_SEGMENT
 from app.components.theme import (
     apply_chart_theme,
-    get_current_theme,
     get_theme_config,
 )
 
