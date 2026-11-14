@@ -253,10 +253,10 @@ The data pipeline never mutates input DataFrames in-place (`df.copy()` is enforc
 
 ## 6. Security, Isolation, and Reproducibility
 
-1. **Virtual Environment Isolation:** All project execution occurs strictly within `.venv` (Python 3.11).
+1. **Virtual Environment Isolation & Local Reproducibility:** All project execution occurs strictly within `.venv` (Python 3.11). Following Phase 8 storage reclamation, the environment is cleanly reproducible via `py -3.11 -m venv .venv` and `pip install --cache-dir .cache/pip -r requirements-dev.txt`, maintaining zero pollution of global Windows directories.
 2. **Pre-Publication Security Audit:** Automated credential scanning verified 0 secrets, tokens, or credentials across all project files.
 3. **Data Protection:** `.gitignore` excludes large dataset binaries (`data/raw/*.csv`, `data/processed/*.parquet`), local scratch scripts, and environment caches while preserving repository structure via `.gitkeep`.
 4. **Automated Quality Gates:**
-   - **Pytest:** 93 automated unit tests with 100% pass rate.
-   - **Flake8:** 0 errors and 0 warnings across all application and source files.
+   - **Pytest:** 116 automated unit tests (115 passed, 1 skipped) with 100% core pass rate.
+   - **Flake8:** 0 errors and 0 warnings across all application, source, test, and tool modules.
    - **Cryptographic Hashes:** Immutable SHA-256 verification of primary survey microdata.
