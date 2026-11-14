@@ -4,8 +4,9 @@ env/
 venv/
 ENV/
 
-# Local Caches
+# Local Caches & Temporary Files
 .cache/
+.tmp/
 
 # Python cache & artifacts
 __pycache__/

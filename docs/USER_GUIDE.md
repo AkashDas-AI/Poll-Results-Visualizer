@@ -60,6 +60,12 @@ Open your web browser and navigate to:
 
 The visualizer provides an interactive, 4-page analytical portal with sub-second responsive filtering powered by Streamlit caching (`@st.cache_data`).
 
+### Theme Management: Light Mode / Dark Mode Toggle
+- **Default Appearance:** The application launches in a high-contrast Enterprise Dark Mode (`#0E1117` canvas, `#1C2433` card surfaces, `#F1F5F9` primary typography).
+- **Interactive Toggle:** Located prominently at the top of the sidebar (`🎨 Display Theme`) across the main entry point and all four analytical pages.
+- **Session Persistence:** Theme selection is synchronized via `st.session_state["theme_mode"]` and preserved across page transitions and parameter reruns.
+- **Plotly Dual-Theme Adaptation:** Chart figures dynamically toggle between `plotly_dark` and `plotly_white` templates with adapted gridlines, axis labels, hover tooltips, and transparent backgrounds.
+
 ### 1. Home / Landing Page (`app/streamlit_app.py`)
 - **Survey Telemetry:** Displays core survey constants: Raw records ($49,191$), Official published base ($49,009$), Countries represented ($177$), Overall AI tool adoption rate ($78.50\%$), and Median converted compensation ($\$75,320$ USD).
 - **Survey Methodology Notice:** Clear notification explaining that the dataset represents an unweighted, voluntary opt-in convenience sample.

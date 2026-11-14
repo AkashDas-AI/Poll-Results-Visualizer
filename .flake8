@@ -2,6 +2,8 @@
 max-line-length = 120
 exclude =
     .venv,
+    .cache,
+    .tmp,
     __pycache__,
     .pytest_cache,
     outputs,

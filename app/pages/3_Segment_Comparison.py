@@ -20,7 +20,7 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from app.data_provider import get_survey_dataset  # noqa: E402
 from app.components.filters import render_survey_demographic_filters  # noqa: E402
-from app.components.theme import apply_custom_theme  # noqa: E402
+from app.components.theme import apply_custom_theme, apply_chart_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_compensation_box,
     CHART_FONT_FAMILY,
@@ -219,23 +219,18 @@ def main():
                 title="<b>Compensation by Professional Experience Bracket</b>",
                 color="Experience Bracket",
                 color_discrete_sequence=px.colors.qualitative.Safe,
-                template=DEFAULT_CHART_TEMPLATE,
             )
             fig_exp_box.update_layout(
-                font=dict(family=CHART_FONT_FAMILY),
                 showlegend=False,
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
                 yaxis_title="Annual Compensation (USD)",
                 xaxis_title="",
                 yaxis=dict(
                     tickprefix="$",
                     tickformat=",.0f",
-                    gridcolor="rgba(128, 128, 128, 0.15)",
                 ),
-                xaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
                 margin=dict(l=20, r=20, t=50, b=40),
             )
+            apply_chart_theme(fig_exp_box)
             st.plotly_chart(fig_exp_box, use_container_width=True)
 
         with col_exp_text:
@@ -297,23 +292,18 @@ def main():
                 title="<b>Compensation by Working Arrangement (USD)</b>",
                 color="Arrangement",
                 color_discrete_sequence=["#3B82F6", "#F59E0B", "#22C55E"],
-                template=DEFAULT_CHART_TEMPLATE,
             )
             fig_rw_box.update_layout(
-                font=dict(family=CHART_FONT_FAMILY),
                 showlegend=False,
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
                 yaxis_title="Annual Compensation (USD)",
                 xaxis_title="",
                 yaxis=dict(
                     tickprefix="$",
                     tickformat=",.0f",
-                    gridcolor="rgba(128, 128, 128, 0.15)",
                 ),
-                xaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
                 margin=dict(l=20, r=20, t=50, b=40),
             )
+            apply_chart_theme(fig_rw_box)
             st.plotly_chart(fig_rw_box, use_container_width=True)
 
         with col_rw_memo:

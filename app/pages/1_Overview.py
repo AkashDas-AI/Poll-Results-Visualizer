@@ -20,7 +20,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from app.data_provider import get_survey_dataset, get_survey_overview_kpis  # noqa: E402
 from app.components.kpi_cards import render_survey_executive_kpis  # noqa: E402
 from app.components.filters import render_survey_demographic_filters  # noqa: E402
-from app.components.theme import apply_custom_theme  # noqa: E402
+from app.components.theme import apply_custom_theme, apply_chart_theme  # noqa: E402
 from app.components.charts import (  # noqa: E402
     plot_horizontal_bar_with_denominators,
     CHART_FONT_FAMILY,
@@ -112,19 +112,14 @@ def main():
                 title="<b>Respondent Age Cohort Distribution</b>",
                 color="Percentage",
                 color_continuous_scale="Blues",
-                template=DEFAULT_CHART_TEMPLATE,
             )
             fig_age.update_layout(
-                font=dict(family=CHART_FONT_FAMILY),
                 showlegend=False,
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
                 yaxis_title="Share of Answered Respondents (%)",
                 xaxis_title="",
-                xaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
-                yaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
                 margin=dict(l=20, r=20, t=50, b=30),
             )
+            apply_chart_theme(fig_age)
             st.plotly_chart(fig_age, use_container_width=True)
             modal_idx = age_df["Count"].idxmax()
             modal_row = age_df.loc[modal_idx]
@@ -209,15 +204,11 @@ def main():
             )
             fig_exp.update_layout(
                 title="<b>Experience Distributions: Total Coding vs. Professional Work Experience</b>",
-                template=DEFAULT_CHART_TEMPLATE,
-                font=dict(family=CHART_FONT_FAMILY),
-                paper_bgcolor="rgba(0,0,0,0)",
-                plot_bgcolor="rgba(0,0,0,0)",
                 xaxis_title="Years of Experience",
-                xaxis=dict(gridcolor="rgba(128, 128, 128, 0.15)"),
                 margin=dict(l=20, r=20, t=50, b=30),
                 height=260,
             )
+            apply_chart_theme(fig_exp)
             st.plotly_chart(fig_exp, use_container_width=True)
         else:
             st.info("Insufficient experience data for box plot.")

@@ -1581,6 +1581,35 @@ Conducted a systematic post-publication audit and cleanup of the Windows local d
 - **Pytest Suite:** 92 passed, 1 skipped (Parquet-only clean-room mode) in 13.36s.
 - **Flake8 Linting:** 0 errors, 0 warnings across `app`, `src`, `tests`, `tools`.
 
+---
+
+## [2026-11-14] - Feature Enhancement: Dashboard Light/Dark Mode Toggle & Project-Local Storage Policy
+
+**Author:** Akash Das  
+**Execution Context:** Production Dashboard Polish & Environment Hygiene Governance  
+**Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`
+
+### 1. Centralized Theme Management Architecture
+Implemented a unified, enterprise-grade theme management system across the multi-page Streamlit application:
+- **Default Theme:** Preserved Enterprise Dark Mode (`#0E1117` canvas, `#161B26` sidebar, `#1C2433` cards, `#F1F5F9` text) as the out-of-the-box baseline.
+- **Enterprise Light Mode:** Engineered a high-contrast Business Intelligence Light Theme (`#F8FAFC` canvas, `#F1F5F9` sidebar, `#FFFFFF` cards, `#0F172A` Slate-900 typography, `#CBD5E1` borders).
+- **Interactive Sidebar Toggle:** Added `render_theme_toggle` in `app/components/theme.py`, rendered prominently at the top of the sidebar across `app/streamlit_app.py` and all four analytical pages (`1_Overview.py`, `2_Response_Analysis.py`, `3_Segment_Comparison.py`, `4_Data_Quality.py`).
+- **Session State Persistence:** Synchronized theme selection via `st.session_state["theme_mode"]` and `_on_theme_toggle_change` callback, guaranteeing seamless persistence across page navigation and Streamlit execution reruns.
+- **Plotly Dual-Theme Engine:** Implemented `apply_chart_theme` in `app/components/theme.py` and upgraded all 10 chart generators in `app/components/charts.py` along with inline figures in `app/pages/1_Overview.py` and `app/pages/3_Segment_Comparison.py`. Charts dynamically toggle between `plotly_dark` and `plotly_white` templates, updating axis typography, gridline opacity, legends, and transparent backgrounds without mutating analytical underlying data.
+
+### 2. Strict Project-Local Storage & Cache Configuration
+Configured all development caches to remain strictly within the project boundary without polluting Windows system directories:
+- **Pytest Cache:** Configured `cache_dir = .cache/pytest` in `pytest.ini`.
+- **Git Ignore Hygiene:** Added `.tmp/` alongside `.cache/` in `.gitignore`.
+- **Flake8 Exclusion:** Excluded `.cache` and `.tmp` in `.flake8`.
+- **Environment Template:** Documented project-local cache variables (`PYTHONPYCACHEPREFIX`, `PIP_CACHE_DIR`, `TMPDIR`) in `.env.example`.
+- **Zero Package Modification:** No global packages installed, no `pip install --user` invoked, no `.venv` automatically created.
+
+### 3. Verification & Static Code Analysis
+- **AST Parsing:** Executed Python standard library Abstract Syntax Tree (`ast.parse`) validation across all modified files (`theme.py`, `charts.py`, `1_Overview.py`, `3_Segment_Comparison.py`, `streamlit_app.py`, `2_Response_Analysis.py`, `4_Data_Quality.py`). All modules compiled with zero syntax errors.
+- **Runtime Testing Status:** In adherence to the strict environment policy, runtime tests (`pytest`, `streamlit run`) remain pending explicit user authorization to avoid recreating `.venv` or modifying the clean workstation state.
+
+
 
 
 
