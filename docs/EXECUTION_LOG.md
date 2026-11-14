@@ -1550,6 +1550,38 @@ Following Project Lead review of initial Phase 7 deliverables, material numerica
 - **Live Health Probe:** HTTP 200 OK (`/_stcore/health`).
 - **GitHub Actions Remote Status:** Run ID `42794037767` on commit `5fdf407` completed successfully with green checkmarks across both `test (3.10)` and `test (3.11)` jobs.
 
+---
+
+## [2026-11-14] - Local Environment Cleanup, Reproducibility Audit & Maintenance Documentation
+
+**Author:** Akash Das  
+**Execution Context:** Post-Publication Local Workstation Cleanup & Storage Optimization  
+**Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`
+
+### 1. Cleanup Objectives & Storage Reclamation
+Conducted a systematic post-publication audit and cleanup of the Windows local development workstation to reclaim disk storage while preserving 100% analytical reproducibility:
+- **Total Storage Reclaimed:** Reclaimed **~726.51 MB**, reducing total project disk footprint from **~801.20 MB** down to **74.69 MB** (`78,312,938` bytes), achieving a **~90.7% storage reduction**.
+- **Ephemeral Virtual Environment:** Removed `.venv/` (~465.07 MB). Complete environment is regenerable in seconds from pinned `requirements.txt` and `requirements-dev.txt`.
+- **Bytecode & Pytest Caches:** Purged `.pytest_cache/` and 5 `__pycache__/` directories across `app`, `app/components`, `src`, `src/datasets`, and `tests` (~0.61 MB).
+- **Redundant Processed CSV:** Pruned `data/processed/survey_results_cleaned.csv` (126.43 MB). Canonical Apache Parquet (`survey_results_cleaned.parquet`, 9.43 MB) is preserved and provides 13.4× storage efficiency and faster columnar querying.
+- **Downloadable Raw Survey Microdata:** Pruned `data/raw/stackoverflow_developer_survey_2025/survey_results_public.csv` (134.37 MB) after verifying public accessibility via Stack Exchange Git LFS endpoints (`HTTP 200 OK`).
+
+### 2. Preservation of Canonical Reproducibility Assets
+- **Canonical Parquet Microdata:** Preserved `data/processed/survey_results_cleaned.parquet` (9,890,724 bytes, 9.43 MB).
+  - SHA-256 Checksum: `16f5ce8e8f387405fa9635e44074dc468f44b82c0ee23287b2889be238fbbe52` (Cryptographically verified).
+- **Schema & Metadata:** Preserved `data/raw/.../survey_results_schema.csv` (30,403 bytes, SHA-256: `1d24951e04eab46c6f9fecef6ce8e6b32a0a14a3f0eecdcf62f70833a74b3ff8`) and `source_metadata.md`.
+- **Reporting Deliverables & Visuals:** Preserved all 14 interactive HTML Plotly charts (`outputs/charts/`, ~61.37 MB), 11 high-res screenshots (`images/`), pre-computed metrics JSONs, and all 4 analytical markdown reports.
+- **Application & Analytical Engine:** Preserved all 35 modules across `app/`, `src/`, `tests/`, and `tools/`.
+
+### 3. Local Maintenance & Restoration Documentation
+- **Authored Dedicated Guide:** Created `docs/LOCAL_ENVIRONMENT_CLEANUP_AND_RESTORATION.md` detailing the complete storage audit, preserved checksums, and exact PowerShell commands to recreate the virtual environment, install requirements, execute quality gates, and launch the dashboard.
+- **Version Control Privacy Boundary:** Excluded `docs/LOCAL_ENVIRONMENT_CLEANUP_AND_RESTORATION.md` and related patterns (`docs/*CLEANUP*`, `docs/*RESTORATION*`) from the public Git repository via `.gitignore` to maintain workstation privacy and clean repository presentation.
+
+### 4. Quality Verification
+- **Pytest Suite:** 92 passed, 1 skipped (Parquet-only clean-room mode) in 13.36s.
+- **Flake8 Linting:** 0 errors, 0 warnings across `app`, `src`, `tests`, `tools`.
+
+
 
 
 

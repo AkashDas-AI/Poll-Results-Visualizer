@@ -73,6 +73,11 @@ docs/PORTFOLIO_PRESENTATION_GUIDE.md
 docs/*INTERVIEW*
 docs/*PORTFOLIO*
 
+# Private Maintenance and Local Cleanup Guides (Local Workstation Only)
+docs/LOCAL_ENVIRONMENT_CLEANUP_AND_RESTORATION.md
+docs/*CLEANUP*
+docs/*RESTORATION*
+
 # Operating system files
 .DS_Store
 Thumbs.db
