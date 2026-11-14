@@ -19,7 +19,14 @@
 cd "D:\Projects\Data Science\Poll Results Visualizer"
 ```
 
-### Step 2: Activate the Virtual Environment
+### Step 2: Activate (or Recreate) the Virtual Environment
+If the local virtual environment was cleaned up during post-publication storage reclamation, recreate it cleanly using:
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --cache-dir .cache/pip -r requirements-dev.txt
+```
+
+If `.venv` is already present, activate it:
 - **Windows PowerShell:**
   ```powershell
   .\.venv\Scripts\Activate.ps1
