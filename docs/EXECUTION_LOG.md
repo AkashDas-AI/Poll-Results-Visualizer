@@ -1662,6 +1662,75 @@ Configured all development caches to remain strictly within the project boundary
 - Verified zero temporary files or global packages were left behind outside the project directory.
 - Re-confirmed repository footprint remains at the optimized **74.69 MB** baseline.
 
+---
+
+## [2026-11-14] — Phases 1 to 7: Centralized Theme Architecture, Toggle Persistence, Four-Page Visual Styling, QA & Publishing
+
+- **Author:** Akash Das
+- **Execution Context:** End-to-End Implementation, Verification Gate, Quality Assurance, and Version Control Publishing
+- **Project Root:** `D:/Projects/Data Science/Poll Results Visualizer`
+- **GitHub Repository:** `https://github.com/AkashDas-AI/Poll-Results-Visualizer`
+
+### 1. Phase 1: Python Development Environment Restoration
+- **Isolation Policy:** Created local virtual environment strictly at `D:/Projects/Data Science/Poll Results Visualizer/.venv` using Python 3.11.0 (`python -m venv .venv`).
+- **Dependency Installation:** Installed pinned packages from `requirements-dev.txt` with `--cache-dir .cache/pip` to ensure zero global package installation or pollution of Windows system directories.
+- **Environment Verification:** Validated `pip check` ("No broken requirements found.").
+
+### 2. Phase 2: Project Inspection & Baseline Audit
+- **Dataset Immutability:** Verified canonical Parquet dataset `data/processed/survey_results_cleaned.parquet` (SHA-256: `16f5ce8e8f387405fa9635e44074dc468f44b82c0ee23287b2889be238fbbe52`, dimensions: 49,191 rows $\times$ 176 columns) and schema CSV `data/raw/.../survey_results_schema.csv` (SHA-256: `1d24951e04eab46c6f9fecef6ce8e6b32a0a14a3f0eecdcf62f70833a74b3ff8`).
+- **Baseline Test Suite:** Executed initial pytest suite: 92 passed, 1 skipped in 8.88s (intentional disk raw CSV skip when canonical Parquet is active).
+- **Flake8 Baseline:** 0 errors, 0 warnings across all project modules.
+
+### 3. Phase 3: Centralized Theme Architecture Hardening (Commit `346e75d`)
+- **Single Source of Truth:** Hardened `app/components/theme.py` as the canonical theme manager.
+- **Standardized Schema Contract:** Structured `DARK_THEME` and `LIGHT_THEME` palettes with an identical 20-key specification (`name`, `bg_main`, `bg_sidebar`, `bg_card`, `text_primary`, `text_secondary`, `accent_primary`, `indicator_positive`, `indicator_warning`, `border`, `plotly_template`, `chart_grid`, `chart_font_color`, `chart_secondary_color`, `chart_paper`, `chart_bg`, `hover_bg`, `hover_text`, `hover_border`, `font_family`).
+- **Plotly Figure Theming:** Hardened `apply_chart_theme(fig, theme)` with defensive `fig is None` null guard, explicit validation raising `ValueError` on unrecognized theme strings, and preservation of all underlying data traces, customdata, and coordinates.
+- **Defensive State Fallback:** Configured `get_current_theme()` to default safely to `"Dark"` in headless or uninitialized sessions.
+- **Automated Tests:** Created `tests/test_theme.py` testing schema symmetry, registry completeness, default fallback, and invalid-theme exceptions.
+
+### 4. Phase 4: Persistent Light/Dark Toggle Integration (Commit `774fee5`)
+- **Sidebar Radio Toggle:** Implemented `render_theme_toggle(location="sidebar")` using `st.sidebar.radio` with options `["🌙 Dark", "☀️ Light"]` and widget key `"theme_mode_selector"`.
+- **Session State Synchronization:** Bound toggle selection to `st.session_state["theme_mode"]` via callback `_on_theme_toggle_change()`, storing title-case strings `"Dark"` and `"Light"`.
+- **Navigation Persistence:** Ensured theme persists across page switches without reset, and stabilized consecutive Streamlit reruns.
+- **Lifecycle Test Suite:** Added automated tests in `tests/test_theme.py` covering Scenarios A–F:
+  - Scenario A: Fresh session Dark default.
+  - Scenario B: Toggle switch to Light mode and CSS injection.
+  - Scenario C: Toggle switch back to Dark mode.
+  - Scenario D: Cross-page navigation persistence across all 4 analytical pages.
+  - Scenario E: Consecutive rerun session stability with zero key collision.
+  - Scenario F: Invalid session state recovery and graceful fallback.
+
+### 5. Phase 5: Four-Page Dashboard Visual Styling & 14-Chart Audit (Commit `b93b900`)
+- **Shared Chart Generators Audited (10):** Validated dual-theme compliance in `app/components/charts.py`:
+  `plot_distribution_bar`, `plot_distribution_pie`, `plot_segment_breakdown_bar`, `plot_trend_line`, `plot_horizontal_bar_with_denominators`, `plot_technology_comparison_bar`, `plot_compensation_box`, `plot_missingness_ranking_bar`, `plot_sample_flow_funnel`, and `_empty_figure`.
+- **Page-Level Inline Figures Audited (4):** Applied `apply_chart_theme` to `fig_age` (`1_Overview.py`), `fig_exp` (`1_Overview.py`), `fig_exp_box` (`3_Segment_Comparison.py`), and `fig_rw_box` (`3_Segment_Comparison.py`).
+- **Empty Figure Theming Bugfix:** Resolved transparent background discrepancy in `_empty_figure()` by routing through `apply_chart_theme(fig, theme=theme)` and standardizing `chart_paper` and `chart_bg` as `"rgba(0, 0, 0, 0)"`.
+- **Expanded Test Suite:** Added parameterized test fixtures covering all 14 charts under both Dark and Light modes. Test suite grew from 93 to 116 collected items: **115 passed, 1 skipped in 11.22s**.
+- **Code Quality:** Flake8 clean: 0 errors, 0 warnings across `app`, `src`, `tests`, `tools`.
+
+### 6. Phase 6: Comprehensive Quality Assurance & Multi-Page Testing
+- **Full Regression Test Suite:**
+  - `pytest -v`: 115 passed, 1 skipped in 10.10s.
+  - `flake8 app src tests tools`: 0 errors, 0 warnings across all 35 project modules.
+  - `pip check`: Clean — No broken requirements found.
+- **Dynamic Multi-Page Module Loading:** Verified clean compilation and runtime import via `SourceFileLoader` across `app/streamlit_app.py`, `app/pages/1_Overview.py`, `app/pages/2_Response_Analysis.py`, `app/pages/3_Segment_Comparison.py`, and `app/pages/4_Data_Quality.py`.
+- **Data & Analytical Immutability:** Verified Parquet dataset (SHA-256: `16f5ce8e...`, 49,191 rows $\times$ 176 columns) and schema CSV (SHA-256: `1d24951e...`) remained bit-for-bit identical to baseline.
+
+### 7. Phase 6 Verification Gate: Theme State Consistency & Live Sandbox Audit
+- **Canonical Architecture Confirmation:** Audited codebase to establish definitive single source of truth:
+  - Canonical Session-State Key: `st.session_state["theme_mode"]`
+  - Canonical Allowed Values: `"Dark"` and `"Light"` (Title-case strings)
+  - Canonical Radio Widget Key: `"theme_mode_selector"`
+  - Canonical Options: `["🌙 Dark", "☀️ Light"]`
+  - Canonical Default Theme: `"Dark"`
+- **Reporting Error Rectification:** Formally documented that the Phase 6 report's informal reference to `st.session_state["theme"]` and lowercase `"dark"`/`"light"` was purely a typographical reporting error in the QA report text. The committed source code and test suite consistently implement `theme_mode` and `"Dark"`/`"Light"`. Zero source code changes were required.
+- **Sandbox Loopback Socket Limitation:** Confirmed that in Standard Sandbox Mode on Windows, socket loopback connections (`urllib.request.urlopen("http://localhost:8501")`) raise `[WinError 10013] An attempt was made to access a socket in a way forbidden by its access permissions`. Honestly documented that automated HTTP 200 health checks and in-browser verification cannot execute inside the sandbox, providing clear manual verification steps for the host Windows environment.
+
+### 8. Phase 7: Documentation Finalization, Reproducibility Review & GitHub Publishing
+- **README.md Synchronization:** Updated key features, dashboard walkthrough, test metrics (115 passed, 1 skipped), architecture tree (`app/components/theme.py`, `tests/test_theme.py`), setup instructions, and official repository links (`https://github.com/AkashDas-AI/Poll-Results-Visualizer`).
+- **Documentation Parity:** Synchronized `docs/USER_GUIDE.md` and `docs/PROJECT_ARCHITECTURE.md` to reflect theme management and 116-test suite metrics.
+- **Reproducibility Verification:** Verified clean local reproducibility via project-local `.venv`, `pytest.ini` (`cache_dir = .cache/pytest`), and `.gitignore`.
+- **Version Control Publishing:** Published approved commits (`346e75d`, `774fee5`, `b93b900`, plus Phase 7 documentation commit) to `origin/main` on GitHub.
 
 
 

@@ -156,6 +156,7 @@ graph TD
 | `app/components/charts.py` | Plotly visualization factory generating standardized, accessible chart components. | `plotly.graph_objects`, `plotly.express`, `pandas` | UI View Rendering |
 | `app/components/filters.py` | Modular sidebar and page filter widgets for dynamic demographic cohort slicing. | `streamlit`, `pandas` | User Input Events |
 | `app/components/kpi_cards.py` | Executive KPI metric cards with context annotations, sample sizes, and benchmark indicators. | `streamlit` | UI View Rendering |
+| `app/components/theme.py` | Centralized Light/Dark theme manager: 20-key design palettes, scoped CSS injection, session persistence (`theme_mode`), and Plotly dual-theming (`apply_chart_theme`). | `streamlit`, `typing` | UI View Rendering / Styles |
 | `app/streamlit_app.py` | Application entry point, survey metadata landing page, and population telemetry navigator. | `app.data_provider`, `app.components.*`, `streamlit` | Browser Session |
 | `app/pages/*.py` | Multi-page dashboards (Overview, Response Analysis, Segment Comparison, Data Quality). | `app.data_provider`, `src.analysis`, `app.components.*` | Browser Session |
 

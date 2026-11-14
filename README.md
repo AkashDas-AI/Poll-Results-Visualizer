@@ -7,16 +7,15 @@
 [![NumPy](https://img.shields.io/badge/NumPy-1.26+-013243?logo=numpy&logoColor=white)](https://numpy.org/)
 [![Apache Parquet](https://img.shields.io/badge/Data%20Format-Apache%20Parquet-5080E2)](https://parquet.apache.org/)
 [![Statistical Inference](https://img.shields.io/badge/Inference-White%20HC1%20%7C%20OLS-blue)](reports/analysis_report.md)
-[![Tests](https://img.shields.io/badge/Tests-93%20Passed%20(100%25)-success)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-115%20Passed%20%7C%201%20Skipped-success)](tests/)
 [![Code Style](https://img.shields.io/badge/Code%20Style-Flake8%20(0%20errors)-blue)](.flake8)
 [![Dataset](https://img.shields.io/badge/Dataset-Stack%20Overflow%202025-orange)](https://survey.stackoverflow.co/2025/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**Author:** Akash Das  
-**Role:** Data Science and Analytics Intern Candidate  
-**Project Lead:** ChatGPT  
-**Milestone:** Phase 8 of 8 - Release Packaging, Verification, and GitHub Publication  
-**Primary Dataset:** Official Stack Overflow Annual Developer Survey 2025 (49,191 respondents across 177 countries)  
+**Author:** Akash Das<br>
+**Role:** Data Science and Analytics Intern Candidate<br>
+**GitHub Repository:** [https://github.com/AkashDas-AI/Poll-Results-Visualizer](https://github.com/AkashDas-AI/Poll-Results-Visualizer)<br>
+**Primary Dataset:** Official Stack Overflow Annual Developer Survey 2025 (49,191 respondents across 177 countries)
 
 ---
 
@@ -56,8 +55,8 @@ Poll Results Visualizer is a production-grade, modular Python data analytics and
 The system is engineered using a decoupled four-tier architecture:
 - Data Engineering and Hygiene: Data ingestion, numeric experience derivation, delimiter cleaning, and Parquet serialization.
 - Pure-Python Econometric and Statistical Engine: Ordinary Least Squares regression, White HC1 heteroskedasticity-robust standard errors, Variance Inflation Factor diagnostics, contingency chi-square tests, and one-way ANOVA with effect size decomposition.
-- Interactive Streamlit and Plotly Presentation Tier: Multi-page responsive web dashboard with dual-denominator arithmetic and dynamic cohort filtering.
-- Automated Quality Assurance Suite: 93 automated unit tests with 100% pass rate and zero Flake8 linting errors.
+- Interactive Streamlit and Plotly Presentation Tier: Multi-page responsive web dashboard with dual-denominator arithmetic, dynamic cohort filtering, and persistent Light/Dark mode theming.
+- Automated Quality Assurance Suite: 116 automated unit tests (115 passed, 1 skipped) with zero Flake8 linting errors.
 
 ---
 
@@ -79,8 +78,9 @@ Poll Results Visualizer resolves these challenges by enforcing transparent denom
 1. Develop a deterministic, non-destructive data cleaning pipeline that preserves raw survey records while deriving clean numeric analytical features.
 2. Build an independent, pure-Python econometric calculation engine from first principles, avoiding native binary compilation issues in sandbox environments.
 3. Design and deploy an interactive multi-page Streamlit portal delivering sub-second cohort slicing, dual-denominator visualizations, and clear tooltips.
-4. Investigate four core empirical research questions covering AI accuracy trust, human capital compensation premiums, autonomous AI agents versus job satisfaction, and remote work compensation dynamics.
-5. Provide comprehensive, evidence-grounded documentation and reporting deliverables tailored for Data Analyst, Business Analyst, and Insights Analyst roles.
+4. Implement a centralized, persistent Light Mode / Dark Mode toggle across all dashboard pages with responsive Plotly figure styling.
+5. Investigate four core empirical research questions covering AI accuracy trust, human capital compensation premiums, autonomous AI agents versus job satisfaction, and remote work compensation dynamics.
+6. Provide comprehensive, evidence-grounded documentation and reporting deliverables tailored for Data Analyst, Business Analyst, and Insights Analyst roles.
 
 ---
 
@@ -91,13 +91,14 @@ Poll Results Visualizer resolves these challenges by enforcing transparent denom
 - Dual-Denominator Visualizations: Distinguishes between Respondent Share (percentage of respondents who use a tool) and Selection Share (percentage of all checkmarks recorded) across multi-select questions.
 - Pure-Python Econometric Engine: Executes multivariable OLS regressions, White HC1 robust covariance matrix estimation, Breusch-Pagan heteroskedasticity tests, and auxiliary VIF regressions without external C-extension dependencies.
 - Sub-Second Interactive Filtering: Dynamic demographic slicers across 177 countries, 5 experience brackets, and salary trimming thresholds powered by Streamlit memory caching (`@st.cache_data`).
-- Comprehensive Test Coverage: 93 automated unit tests in pytest verifying statistical engines, data adapters, UI components, and reporting assertions with a 100% pass rate.
+- Enterprise Light & Dark Mode Theming: Centralized theme architecture (`app/components/theme.py`) featuring high-contrast Business Intelligence palettes, scoped CSS injection, and transparent Plotly figure adaptability (`apply_chart_theme`) across all 14 dashboard charts. Theme selection is driven by a sidebar radio toggle (`theme_mode_selector`) with seamless session-state persistence (`theme_mode`) across page navigation.
+- Comprehensive Test Coverage: 116 automated unit tests in pytest verifying statistical engines, theme lifecycle persistence, Plotly figure theming, data adapters, UI components, and reporting assertions with 115 passed and 1 skipped (100% core pass rate).
 
 ---
 
 ## 5. Dashboard Overview and Screenshots
 
-The application provides an interactive web dashboard divided into four dedicated analytical pages plus an executive landing portal:
+The application provides an interactive web dashboard divided into four dedicated analytical pages plus an executive landing portal, each featuring an interactive sidebar theme toggle (`🌙 Dark` / `☀️ Light`):
 - Executive Home Portal: Displays global survey telemetry (49,191 raw extract, 49,009 official qualified base, 177 countries, 78.5% AI adoption, $75,320 USD median compensation).
 - Page 1 (Overview): Developer demographics, natural age distribution, formal education levels, coding versus work experience profiles, employment breakdown, and geographic distribution.
 - Page 2 (Response Analysis): Programming language adoption, paired current-versus-desired preference gaps (N = 27,079), databases, cloud platforms, and a four-tab AI adoption hierarchy.
@@ -438,7 +439,8 @@ poll-results-visualizer/
 |   |   |-- __init__.py
 |   |   |-- charts.py                     # Plotly chart builders with dual denominators
 |   |   |-- filters.py                    # Demographic slicers (country, experience, salary)
-|   |   `-- kpi_cards.py                  # Executive KPI metric tiles
+|   |   |-- kpi_cards.py                  # Executive KPI metric tiles
+|   |   `-- theme.py                      # Centralized Light/Dark theme manager, CSS, and chart styling
 |   `-- pages/                            # Multi-page dashboard views
 |       |-- 1_Overview.py                 # Demographics, age, education, and experience
 |       |-- 2_Response_Analysis.py        # Languages, stated preferences, cloud, and AI
@@ -501,7 +503,7 @@ poll-results-visualizer/
 |       |-- __init__.py
 |       |-- stackoverflow_2025.py         # Stack Overflow survey loader and aggregators
 |       `-- stackoverflow_cleaning.py     # Cleaning pipeline and numeric experience derivation
-`-- tests/                                # Automated unit test suite (93 tests, 100% pass)
+`-- tests/                                # Automated unit test suite (116 tests: 115 passed, 1 skipped)
     |-- __init__.py
     |-- test_analysis.py                  # Statistical engine unit tests
     |-- test_dashboard_components.py      # Streamlit charts, filters, and KPI tests
@@ -512,7 +514,8 @@ poll-results-visualizer/
     |-- test_insights.py                  # Narrative generation and Phase 7 integrity tests
     |-- test_stackoverflow_2025.py        # Adapter and multi-select aggregation tests
     |-- test_stackoverflow_cleaning.py    # Experience parsing and Parquet derivation tests
-    `-- test_statistical_engine_validation.py # Independent closed-form mathematical proofs
+    |-- test_statistical_engine_validation.py # Independent closed-form mathematical proofs
+    `-- test_theme.py                     # Centralized theme architecture, state lifecycle, and chart tests
 ```
 
 ---
@@ -555,8 +558,8 @@ Open Windows PowerShell and navigate to your intended project directory:
 
 ```powershell
 # 1. Clone the repository
-git clone https://github.com/placeholder/poll-results-visualizer.git
-cd "poll-results-visualizer"
+git clone https://github.com/AkashDas-AI/Poll-Results-Visualizer.git
+cd "Poll-Results-Visualizer"
 
 # 2. Create a local isolated virtual environment
 python -m venv .venv
@@ -618,11 +621,11 @@ python -m src.datasets.stackoverflow_cleaning
 
 ## 19. Instructions for Launching the Streamlit Application
 
-With the cleaned Parquet file generated, launch the interactive dashboard:
+With the cleaned Parquet file present, launch the interactive dashboard:
 
 ```powershell
-# Option A: Direct Streamlit module launch
-streamlit run app/streamlit_app.py
+# Option A: Direct Streamlit module launch via project-local .venv
+.\.venv\Scripts\python.exe -m streamlit run app/streamlit_app.py
 
 # Option B: Via convenience runner script
 python run.py
@@ -631,28 +634,28 @@ python run.py
 Open your web browser and navigate to:
 `http://localhost:8501`
 
-Use the left sidebar navigation to switch between the Overview, Response Analysis, Segment Comparison, and Data Quality pages.
+Use the left sidebar navigation to switch between the Overview, Response Analysis, Segment Comparison, and Data Quality pages, and use the **"🎨 Display Theme"** radio toggle to switch between Dark and Light display modes.
 
 ---
 
 ## 20. Testing and Linting Instructions
 
-Execute the automated test and linting suites to verify installation integrity:
+Execute the automated test and linting suites using the project virtual environment:
 
 ```powershell
-# Run the complete test suite (93 unit tests)
-pytest
+# Run the complete test suite (116 total test items)
+.\.venv\Scripts\pytest
 
 # Run tests with verbose output and duration profiling
-pytest -v --durations=10
+.\.venv\Scripts\pytest -v --durations=10
 
-# Verify strict PEP 8 code quality
-flake8 app src tests
+# Verify strict PEP 8 code quality across all project modules
+.\.venv\Scripts\flake8 app src tests tools
 ```
 
 ### Quality Gate Standards:
-- **Pytest:** 93 passed out of 93 tests (100% pass rate).
-- **Flake8:** 0 errors and 0 warnings across all application, source, and test files.
+- **Pytest:** 115 passed, 1 skipped out of 116 tests (100% core pass rate in ~10s).
+- **Flake8:** 0 errors and 0 warnings across all application, source, test, and tool modules.
 - **CI Parity:** Local test commands match the automated GitHub Actions workflow (`.github/workflows/tests.yml`).
 
 ---
@@ -690,7 +693,7 @@ This repository enforces a strict dual-licensing structure:
 
 ## 24. Professional Profiles and Contact
 
-- **GitHub Repository:** [https://github.com/placeholder/poll-results-visualizer](https://github.com/placeholder/poll-results-visualizer)
+- **GitHub Repository:** [https://github.com/AkashDas-AI/Poll-Results-Visualizer](https://github.com/AkashDas-AI/Poll-Results-Visualizer)
 - **LinkedIn Profile:** [https://www.linkedin.com/in/placeholder](https://www.linkedin.com/in/placeholder)
 - **Portfolio Website:** [https://placeholder.github.io](https://placeholder.github.io)
 

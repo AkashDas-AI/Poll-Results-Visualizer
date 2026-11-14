@@ -107,19 +107,19 @@ Features deep-dive empirical evaluations of the core research questions:
 ## 3. Automated Testing & Code Quality Gates
 
 ### Running the Pytest Suite
-Execute all 93 unit tests covering data loading, cleaning, validation, statistical algorithms, and dashboard components:
+Execute all 116 automated unit test items covering data loading, cleaning, validation, statistical algorithms, theme architecture, lifecycle persistence, and dashboard components:
 ```bash
 pytest
 ```
 Expected output:
 ```
-============================= 93 passed in 7.00s ==============================
+======================= 115 passed, 1 skipped in 10.10s =======================
 ```
 
 ### Running PEP 8 Linting
-Verify complete style compliance across the entire codebase:
+Verify complete style compliance across all application, source, test, and tool modules:
 ```bash
-flake8 app src tests
+flake8 app src tests tools
 ```
 Expected output: `0 errors, 0 warnings` (command exits silently with return code 0).
 
